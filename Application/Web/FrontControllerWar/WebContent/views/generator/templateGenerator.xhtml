@@ -1,0 +1,107 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:panelGrid
+            style=" border: 3px double cornflowerblue;  border-radius: 5px; margin: 10px 15px 10px 15px; width: 97%"
+            columns="4"
+            cellpadding="5">
+
+        <!--<c:forEach items="#{DataProperties}" var="field">-->
+        <c:forEach items="#{testGenerator.dataTemplate.dataProperties}" var="field">
+
+            <!-- DEFAULT LABEL -->
+            <p:outputLabel for="#{field.property.name}"
+                           value="#{not empty field.property.label?field.property.label: field.property.name}: "
+                           rendered="#{field.property.visible eq 'true'}"/>
+
+            <!--INPUT_TEXT(0, "Texto")-->
+            <c:if test="#{field.property.renderingType eq '0' and empty field.property.mask}">
+                <p:inputText id="#{field.property.name}" value="#{field.value}"
+                             required="#{field.property.required eq 'true'}"
+                             disabled="#{field.property.editable eq 'false'}"
+                             validatorMessage="#{field.value} is not valid"
+                             rendered="#{field.property.renderingType eq '0' and empty field.property.mask}">
+                    <f:validateRegex pattern="#{field.property.expressionValidator}"/>
+                </p:inputText>
+            </c:if>
+
+            <!--INPUT_TEXT(0, "Texto - Mascara")-->
+            <c:if test="#{field.property.renderingType eq '0' and not empty field.property.mask}">
+                <p:inputMask id="#{field.property.name}" value="#{field.value}"
+                             rendered="#{field.property.renderingType eq '0' and not empty field.property.mask}"
+                             mask="#{field.property.mask}" required="#{field.property.required eq 'true'}"
+                             disabled="#{field.property.editable eq 'false'}"/>
+            </c:if>
+
+            <!--TEXTAREA(1, "Area Texto")-->
+            <c:if test="#{field.property.renderingType eq '1'}">
+                <p:inputTextarea id="#{field.property.name}" value="#{field.value}"
+                                 required="#{field.property.required eq 'true'}"
+                                 maxlength="500" rows="3" cols="40" autoResize="false" style="resize: none"
+                                 rendered="#{field.property.renderingType eq '1'}"/>
+            </c:if>
+
+            <!--OPTION_LIST(2, "Lista")-->
+            <c:if test="#{field.property.renderingType eq '2'}">
+                <p:selectOneMenu value="#{field.value}" required="#{field.property.required eq 'true'}"
+                                 disabled="#{field.property.editable eq 'false'}"
+                                 style="width:165px" rendered="#{field.property.renderingType eq '2'}">
+                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                    <f:selectItems value="#{field.property.propertyOptionItems}" var="propOI"
+                                   itemLabel="#{propOI.description}" itemValue="#{propOI.value}"/>
+                </p:selectOneMenu>
+            </c:if>
+
+            <!--RADIO_BUTTON(3, "Radio")-->
+            <c:if test="#{field.property.renderingType eq '3'}">
+                <p:selectOneRadio value="#{field.value}" required="#{field.property.required eq 'true'}"
+                                  rendered="#{field.property.renderingType eq '3'}"
+                                  disabled="#{field.property.editable eq 'false'}">
+                    <f:selectItems value="#{field.property.propertyOptionItems}" var="propOI"
+                                   itemLabel="#{propOI.description}" itemValue="#{propOI.value}"/>
+                </p:selectOneRadio>
+            </c:if>
+
+            <!--CHECKBOX_LIST(4, "Check List")-->
+            <c:if test="#{field.property.renderingType eq '4'}">
+                <p:selectManyCheckbox value="#{field.value}" required="#{field.property.required eq 'true'}"
+                                      rendered="#{field.property.renderingType eq '4'}"
+                                      disabled="#{field.property.editable eq 'false'}">
+                    <f:selectItems value="#{field.property.propertyOptionItems}" var="propOI"
+                                   itemLabel="#{propOI.description}" itemValue="#{propOI.value}"/>
+                </p:selectManyCheckbox>
+            </c:if>
+
+            <!--CHECKBOX(5, "Check")-->
+            <c:if test="#{field.property.renderingType eq '5'}">
+                <p:selectBooleanCheckbox value="#{field.value}" required="#{field.property.required eq 'true'}"
+                                         rendered="#{field.property.renderingType eq '5'}"
+                                         disabled="#{field.property.editable eq 'false'}"/>
+            </c:if>
+
+            <!--DATE(6, "Fecha")-->
+            <c:if test="#{field.property.renderingType eq '6'}">
+                <p:calendar value="#{field.value}" required="#{field.property.required eq 'true'}"
+                            rendered="#{field.property.renderingType eq '6'}"
+                            disabled="#{field.property.editable eq 'false'}"
+                            navigator="true" pattern="dd-MM-yyyy" showOn="button" readonly="true"/>
+            </c:if>
+
+            <!--LABEL(7, "Etiqueta")-->
+            <c:if test="#{field.property.renderingType eq '7'}">
+                <p:outputLabel value="#{not empty field.property.label?field.property.label: field.property.name }: "
+                               rendered="#{field.property.visible eq '7'}"/>
+            </c:if>
+
+        </c:forEach>
+
+    </h:panelGrid>
+    <!--    </h:form>-->
+</ui:composition>
+

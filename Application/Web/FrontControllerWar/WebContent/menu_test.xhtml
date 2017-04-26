@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>PrimeFaces</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="mystyle.css"/>
+        </f:facet>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="70">
+                <h:selectOneMenu style="margin-right:10px" value="#{language.localeCode}" onchange="submit()"
+                                 valueChangeListener="#{language.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{language.countriesInMap}"/>
+                </h:selectOneMenu>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form target="">
+                    <p:menubar style="border-style: ridge">
+                        <p:submenu label="Operaciones" icon="ui-icon-document">
+                            <p:submenu label="New" icon="ui-icon-contact">
+                                <p:menuitem value="Project" url="#"/>
+                                <p:menuitem value="Other" url="#"/>
+                            </p:submenu>
+                            <p:menuitem value="Open" url="#"/>
+                            <p:separator/>
+                            <p:menuitem value="Quit" url="#"/>
+                        </p:submenu>
+
+                        <p:submenu label="Configuraciones" icon="ui-icon-document">
+                            <p:menuitem value="Herramienta de Plantillas"
+                                        url="views/templatetool/page/templateTool.faces" target="_blank"/>
+                            <p:menuitem value="Test Plantillas" url="views/templatetool/page/templateToolAux.faces"
+                                        target="_blank"/>
+                            <p:menuitem value="Generador Plantilla" url="views/generator/testGenerator.faces"
+                                        target="_blank"/>
+
+                            <p:menuitem value="Menu" url="default.faces" target="_blank"/>
+
+
+                        </p:submenu>
+
+                        <p:menuitem value="Usuario" url="views/usertool/userTool.faces" icon="ui-icon-contact"
+                                    target="_blank"/>
+
+                        <p:menuitem style="margin-right:10px" value="Logout" url="http://www.primefaces.org"
+                                    icon="ui-icon-extlink"/>
+
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</f:view>
+</html>
+

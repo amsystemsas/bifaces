@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <!--<h:outputLabel value="Hello, world"/>-->
+
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Herramienta de Plantillas</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="mystyle.css"/>
+        </f:facet>
+        <p:layout fullPage="true">
+            <h:form id="form">
+                <p:layoutUnit position="center">
+
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                    <p:wizard style="margin:auto;margin-top:2%;width:1024px;"
+                              flowListener="#{testGenerator.onFlowProcess}">
+                        <p:tab id="personal" title="Personal">
+                            <p:panel header="Personal Details">
+
+                                <p:outputPanel id="marco"
+                                               style="border: 3px double cornflowerblue;  border-radius: 5px; margin: auto">
+
+                                    <h:panelGrid style="margin-bottom: 10px" columns="2" cellpadding="5">
+
+                                        <p:outputLabel for="templateName" value="Plantilla: "/>
+                                        <p:selectOneMenu id="templateName" value="#{testGenerator.templateName}"
+                                                         style="width:165px">
+                                            <p:ajax listener="#{testGenerator.onTemplateChange}" update="dataTemplate"/>
+                                            <f:selectItem itemLabel="--Seleccione--" itemValue=""
+                                                          noSelectionOption="true"/>
+                                            <f:selectItems value="#{testGenerator.allTemplate}" var="temp"
+                                                           itemLabel="#{temp.name}" itemValue="#{temp.name}"/>
+                                        </p:selectOneMenu>
+
+                                      <!--  <p:outputLabel for="firstname1" value="Firstname:" />
+                                        <p:inputText id="firstname1" value="" required="true" label="Firstname">
+                                            <f:validateLength minimum="2" />
+                                        </p:inputText>-->
+
+                                    </h:panelGrid>
+                                    <p:separator />
+                                    <p:outputPanel id="dataTemplate">
+
+                                        <ui:include src="templateGenerator.xhtml">
+                                            <ui:param name="DataProperties" value="#{testGenerator.dataTemplate.dataProperties}" />
+                                        </ui:include>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="address" title="Address">
+                            <p:panel header="Address Details">
+                                <!--<p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Street: " />
+                                    <p:inputText value="#{userWizard.user.street}" />
+
+                                    <h:outputText value="Postal Code: " />
+                                    <p:inputText value="#{userWizard.user.postalCode}" />
+
+                                    <h:outputText value="City: " />
+                                    <p:inputText value="#{userWizard.user.city}" />
+
+                                    <h:outputText value="Skip to last: " />
+                                    <h:selectBooleanCheckbox value="#{userWizard.skip}" />
+                                </h:panelGrid>-->
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="contact" title="Contact">
+                            <p:panel header="Contact Information">
+                                <!--<p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Email: *" />
+                                    <p:inputText value="#{userWizard.user.email}" required="true" label="Email"/>
+
+                                    <h:outputText value="Phone: " />
+                                    <p:inputText value="#{userWizard.user.phone}"/>
+
+                                    <h:outputText value="Additional Info: " />
+                                    <p:inputText value="#{userWizard.user.info}"/>
+                                </h:panelGrid>-->
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="confirm" title="Confirmation">
+                            <p:panel header="Confirmation">
+                                <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                                    <!--<h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Firstname: " />
+                                        <h:outputText value="#{userWizard.user.firstname}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Lastname: " />
+                                        <h:outputText value="#{userWizard.user.lastname}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Age: " />
+                                        <h:outputText value="#{userWizard.user.age}" styleClass="outputLabel"/>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Street: " />
+                                        <h:outputText value="#{userWizard.user.street}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Postal: " />
+                                        <h:outputText value="#{userWizard.user.postalCode}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="City: " />
+                                        <h:outputText value="#{userWizard.user.city}" styleClass="outputLabel"/>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Email: " />
+                                        <h:outputText value="#{userWizard.user.email}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Phone " />
+                                        <h:outputText value="#{userWizard.user.phone}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Info: " />
+                                        <h:outputText value="#{userWizard.user.info}" styleClass="outputLabel"/>
+
+                                        <h:outputText />
+                                        <h:outputText />
+                                    </h:panelGrid> -->
+                                </h:panelGrid>
+
+                                <!-- <p:commandButton value="Submit" actionListener="#{userWizard.save}" update="growl" process="@this"/>-->
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+
+                </p:layoutUnit>
+
+
+            </h:form>
+        </p:layout>
+    </h:body>
+</f:view>
+</html>

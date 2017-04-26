@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="ExternalCobusLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/ant-contrib-1.0b3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.annotation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.ejb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.faces-2.2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.faces-api-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.jms.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.resource.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.servlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/javax.servlet.jsp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/log4j-1.2.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/log4j-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/log4j-api-2.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/log4j-core-2.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/log4j-web-2.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/mysql-connector-java-5.1.37-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/servlet-2.2.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../AMSystemLib/Conf/servlet-2.2.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

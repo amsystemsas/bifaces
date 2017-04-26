@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/../Application/Web/FrontControllerWar/WebContent/views/usertool/userData.xhtml" value="file://$PROJECT_DIR$/../Application/Web/FrontControllerWar/WebContent/views/usertool" />
+        <entry key="file://$PROJECT_DIR$/web/MainMenu.xhtml" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/WEB-INF/web.xml" value="file://$PROJECT_DIR$/web" />
+        <entry key="file://$PROJECT_DIR$/web/jwapp/generator/templateGenerator.xhtml" value="file://$PROJECT_DIR$/web/jwapp/generator" />
+      </map>
+    </option>
+  </component>
+</project>

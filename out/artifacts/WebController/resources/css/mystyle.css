@@ -1,0 +1,45 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15/11/2015, 04:48:32 PM
+    Author     : Naldo
+*/
+.headerTemplate{ 
+    height:50px; 
+}
+
+.ui-widget,  .ui-widget .ui-widget {
+    font-size: 12px;
+ }
+
+.ui-wizard, .ui-wizard-step-title{
+    font-size: 12px;
+}
+
+.clockApp {
+    font-size: 9px;
+    padding: 0px 0px;
+}
+
+ .ui-widget-content{
+     border-style: none;
+ }
+
+.ui-clock {
+    padding: 0px 0px !important;
+    font-weight: normal !important;
+    font-size: 10px;
+    border: hidden;
+    background: none;
+}
+
+body {
+    background-image: url("#{resource['images/boxed-bg.jpg']}");
+}
+ 
+
+ 
+

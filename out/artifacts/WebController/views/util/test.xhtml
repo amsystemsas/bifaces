@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Herramienta de Plantillas</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <f:facet name="last">
+            <h:outputStylesheet library="css" name="mystyle.css"  />
+        </f:facet>
+        <p:layout fullPage="true">
+            <h:form id="form">
+                <p:layoutUnit position="center">
+
+                    <p:panelGrid style="margin:auto;margin-top:2%;width:1024px;">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="4">HERRAMIENTA DE PLANTILLAS</p:column>
+                            </p:row>
+                            <p:row>
+                                <!--Header de Plantilla-->
+                                <p:column colspan="2">
+                                    <p:menubar style="width:300px; border-style: none">
+
+                                    </p:menubar>
+                                </p:column>
+                                <!--Header de Propiedad-->
+                                <p:column colspan="2">
+                                    <p:menubar style="width: 354px; border-style: none">
+                                        <f:facet name="options" >
+                                            <p:inputText  id="propertyName" label="propertyName"   style="width:184px;margin-right:2px" placeholder="Property Name" value="#{propertySectionVO.propertyName}"/>
+                                            <p:commandButton value="Guardar" style="margin-right:2px" action="#{propertySectionVO.addProperty()}"
+                                                             icon="ui-icon-plusthick" update="propertyDT propertyName">
+                                            </p:commandButton>
+                                            <p:commandButton value="Buscar"/>
+                                        </f:facet>
+                                    </p:menubar>
+                                </p:column>
+                                <!--<p:column></p:column>-->
+                            </p:row>
+
+                        </f:facet>
+
+                        <p:row>
+                            <!--Seccion del Arbol de Plantilla-->
+                            <p:column style="font-weight: bold;">
+
+                            </p:column>
+
+                            <!--Seccion de Botonera Plantillas - Propiedades -->
+                            <p:column rowspan="2" style="font-weight: bold;">
+
+                            </p:column>
+
+                            <!--Seccion Tabla de Propiedades -->
+                            <p:column colspan="2" rowspan="2">
+                                <p:dataTable id="propertyDT" var="prop" value="#{propertySectionVO.allProperty}"
+                                             selection="#{propertySectionVO.selectedProp}" selectionMode="single" rowKey="#{prop.name}"
+                                             scrollable="true" scrollHeight="396">
+
+                                    <p:column headerText="Propiedad">
+                                        <h:outputText value="#{prop.name}" />
+                                    </p:column>
+                                    <p:column headerText="Tipo">
+                                        <h:outputText value="#{prop.visible}" />
+                                    </p:column>
+
+                                    <f:facet name="footer">
+
+                                        <!--                                            <p:commandButton process="propertyDT" update=":form:carDetail" icon="ui-icon-search" value="View" onclick="PF('dlg2').show();" />-->
+                                        <p:commandButton process="propertyDT" icon="ui-icon-search" value="View" onclick="PF('widSettingProperty').show();" />
+                                        <p:commandButton icon="ui-icon-minusthick" update="propertyDT" value="Eliminar" action="#{propertySectionVO.deleteProperty()}">
+
+                                        </p:commandButton>
+                                    </f:facet>
+                                </p:dataTable>
+                            </p:column>
+
+
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="font-weight: bold;">
+
+
+
+                            </p:column>
+
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column  colspan="7" style="text-align: right">
+                                    Derechos Reservados
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:layoutUnit>
+                <p:dialog header="Modal Dialog" widgetVar="widSettingProperty" modal="false" showEffect="fade" hideEffect="fade" resizable="false" style="height: 380px">
+
+                </p:dialog>
+
+                <p:growl id="winMessageId" showDetail="true" sticky="true" />
+
+            </h:form>
+        </p:layout>
+
+    </h:body>
+
+</f:view>
+</html>
+
