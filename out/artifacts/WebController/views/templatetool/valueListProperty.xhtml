@@ -1,0 +1,38 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <!--    <h:form>-->
+    <h:outputText value="#{textI18.property_TT}: "/>
+    <h:outputText rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.name}" style="font-weight: bold" />
+    <p:dataTable id="optionItemDT" rendered="#{not empty propertySectionVO.selectedProp}"  var="prop" value="#{propertySectionVO.allPropertyOptionItem}"
+                 selection="#{propertySectionVO.optionItem}" selectionMode="single" rowKey="#{prop.value}"
+                 scrollable="true" scrollHeight="150">
+        <f:facet name="header">
+            <p:inputText id="optItemDesc" value="#{propertySectionVO.optionItemDescription}" placeholder="Description In"/>
+            <h:outputText value=" - " />
+            <p:inputText id="optItemValue" value="#{propertySectionVO.optionItemValue}" placeholder="Value In" />
+            <p:commandButton value="#{textI18.save_TT}" style="margin-right:2px"
+                             action="#{propertySectionVO.addOptionItem}"   icon="ui-icon-plusthick" update=":form:tabSetting:optionItemDT optItemDesc optItemValue">
+            </p:commandButton>
+        </f:facet>
+        <p:column headerText="#{textI18.description_TT}">
+            <h:outputText value="#{prop.description}" />
+        </p:column>
+        <p:column headerText="#{textI18.value_TT}">
+            <h:outputText value="#{prop.value}" />
+        </p:column>
+
+        <f:facet name="footer">
+
+
+            <p:commandButton icon="ui-icon-minusthick" value="#{textI18.delete_TT}"/>
+
+
+        </f:facet>
+    </p:dataTable>
+
+</ui:composition>

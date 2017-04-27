@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="CobusLib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../Application/Core/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../Application/Core/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../Application/Core/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../Application/Core/lib" recursive="false" type="SOURCES" />
+  </library>
+</component>

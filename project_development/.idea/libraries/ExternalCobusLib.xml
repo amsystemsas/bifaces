@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="ExternalCobusLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/ant-contrib-1.0b3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/javax.annotation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/javax.ejb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/javax.jms.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/javax.servlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/mysql-connector-java-5.1.37-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/servlet-2.2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/javax.faces-api-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/log4j-core-2.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/log4j-api-2.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../external/Conf/log4j-web-2.8.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

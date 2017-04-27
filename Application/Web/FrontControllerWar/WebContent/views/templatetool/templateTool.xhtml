@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:head>
+        <h:outputStylesheet name="css/mystyle.css"/>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>#{textI18.template_tool_TT}</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <h:form id="form" style="margin:auto;margin-top:2%;width:1024px;">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:layoutUnit position="center">
+                    <p:growl id="winMessageId" showDetail="true" sticky="true"/>
+
+                    <p:panelGrid>
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="4">#{textI18.template_tool_TT}</p:column>
+                            </p:row>
+                            <p:row>
+                                <!--Header de Plantilla-->
+
+                                <p:column colspan="2">
+                                    <p:menubar id="menuTemplate" style="width:300px; border-style: none">
+                                        <f:facet name="options">
+                                            <p:inputText id="templName" label="#{textI18.template_name_TT}"
+                                                         style="width: 195px;margin-right:2px;"
+                                                         placeholder="#{textI18.template_name_TT}"
+                                                         required="true"
+                                                         value="#{templateTreeVO.nodeVO.name}">
+                                                <f:validateRegex pattern="^[a-zA-Z]+$" />
+                                                <f:validateLength minimum="2"/>
+                                            </p:inputText>
+                                            <p:commandButton value="#{textI18.save_TT}" style="margin-right: 2px"
+                                                             icon="ui-icon-plusthick"
+                                                             process="@this templName templateTree"
+                                                             action="#{templateTreeVO.addTemplate}"
+                                                             update="templateTree templName winMessageId"/>
+                                        </f:facet>
+                                    </p:menubar>
+                                </p:column>
+
+                                <!--Header de Propiedad-->
+                                <p:column colspan="2">
+                                    <p:menubar id="menuProperty" style="width: 354px; border-style: none">
+                                        <f:facet name="options">
+
+                                            <p:inputText id="propertyName" label="#{textI18.property_name_TT}"
+                                                         style="width:184px;margin-right:2px"
+                                                         placeholder="#{textI18.property_name_TT}"
+                                                         required="true"
+                                                         value="#{propertySectionVO.propertyName}">
+                                                <f:validateRegex pattern="^[a-zA-Z]+$" />
+                                                <f:validateLength minimum="2"/>
+                                            </p:inputText>
+
+                                            <p:commandButton value="#{textI18.save_TT}" style="margin-right:2px"
+                                                             action="#{propertySectionVO.addProperty}"
+                                                             icon="ui-icon-plusthick"
+                                                             process="@this propertyName propertyDT"
+                                                             update="propertyDT propertyName winMessageId">
+                                            </p:commandButton>
+                                            <p:commandButton value="#{textI18.find_TT}"/>
+
+                                        </f:facet>
+                                    </p:menubar>
+                                </p:column>
+
+                            </p:row>
+                        </f:facet>
+
+                        <p:row>
+                            <!--Seccion del Arbol de Plantilla-->
+                            <p:column style="font-weight: bold;">
+                                <p:outputPanel style="width: 100%;height: 450px;overflow: auto;display: block">
+                                    <p:tree id="templateTree" value="#{templateTreeVO.root}" var="tree"
+                                            selectionMode="single"
+                                            selection="#{templateTreeVO.selectedNode}">
+
+                                        <p:treeNode>
+                                            <h:outputText value="#{tree.name}"/>
+                                        </p:treeNode>
+
+                                        <p:treeNode type="TEMP" expandedIcon="ui-icon-folder-open"
+                                                    collapsedIcon="ui-icon-folder-collapsed">
+                                            <h:outputText value="#{tree.name}"/>
+                                        </p:treeNode>
+
+                                        <p:treeNode type="PROP" icon="ui-icon-video">
+                                            <h:outputText value="#{tree.name}"/>
+                                        </p:treeNode>
+                                    </p:tree>
+                                </p:outputPanel>
+                            </p:column>
+
+                            <!--Seccion de Botonera Plantillas - Propiedades -->
+                            <p:column rowspan="2" style="font-weight: bold;">
+
+
+                                <p:outputPanel style="width:100%;height:400px;overflow:auto;display: block">
+
+                                    <p:commandButton value="#{textI18.associate_TT}" style="margin-bottom: 10px"
+                                                     icon="ui-icon-plusthick"
+                                                     action="#{templateTreeVO.associatePropertyTemplate}"
+                                                     update="templateTree templName winMessageId"/>
+
+                                    <p:commandButton value="#{textI18.disassociate_TT}"
+                                                     action="#{templateTreeVO.disassociatePropertyTemplate()}"
+                                                     icon="ui-icon-mi   nusthick"
+                                                     update="templateTree templName winMessageId"/>
+
+
+                                </p:outputPanel>
+
+
+                            </p:column>
+
+                            <!--Seccion Tabla de Propiedades -->
+                            <p:column colspan="2" rowspan="2">
+                                <p:dataTable id="propertyDT" var="prop" value="#{propertySectionVO.allProperty}"
+                                             selection="#{propertySectionVO.selectedProp}" selectionMode="single"
+                                             rowKey="#{prop.name}"
+                                             scrollable="true" scrollHeight="423">
+
+                                    <p:column headerText="#{textI18.property_TT}">
+                                        <h:outputText value="#{prop.name}"/>
+                                    </p:column>
+                                    <p:column headerText="#{textI18.type_TT}">
+                                        <h:outputText value="#{prop.renderingTypeLabel}"/>
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton process="propertyDT" value="#{textI18.edit_TT}"
+                                                         icon="ui-icon-search"
+                                                         update=":form:tabSetting"
+                                                         onclick="PF('widSettingProperty').show();"/>
+
+                                        <p:commandButton value="#{textI18.clone_TT}" style=""
+                                                         icon="ui-icon-plusthick" update="" disabled="true"/>
+
+                                        <p:commandButton value="#{textI18.delete_TT}" icon="ui-icon-minusthick"
+                                                         update="propertyDT"
+                                                         action="#{propertySectionVO.deleteProperty()}"/>
+                                    </f:facet>
+                                </p:dataTable>
+                            </p:column>
+
+                        </p:row>
+
+                        <!--Seccion Botones de Arbol de Plantillas -->
+                        <p:row>
+                            <p:column style="font-weight: bold;">
+
+                                <p:outputPanel style="">
+
+                                    <p:commandButton value="#{textI18.clone_TT}" icon="ui-icon-plusthick"
+                                                      update="" />
+
+                                    <p:commandButton value="#{textI18.delete_TT}"
+                                                     action="#{templateTreeVO.deleteTemplate()}"
+                                                     icon="ui-icon-minusthick"
+                                                     update="templateTree templName winMessageId"/>
+
+                                    <p:commandButton value="#{textI18.life_cycle_TT}" icon="ui-icon-plusthick"
+                                                     onclick="PF('dlgLifeCycle').show();"/>
+                                </p:outputPanel>
+
+                            </p:column>
+
+                        </p:row>
+                    </p:panelGrid>
+
+
+                </p:layoutUnit>
+
+            <p:dialog id="widSettPropId" header="#{textI18.property_detail_TT}" widgetVar="widSettingProperty"
+                      modal="true"
+                          showEffect="fade" hideEffect="fade" resizable="false" style="margin-top:1%">
+
+                    <p:tabView id="tabSetting" scrollable="true" cache="false"
+                               style="margin:5px 0px 2px 0px;width:600px;">
+                        <p:tab title="#{textI18.viewer_TT}">
+                            <ui:include src="viwerProperty.xhtml"/>
+                        </p:tab>
+                        <p:tab title="#{textI18.list_value_TT}">
+                            <ui:include src="valueListProperty.xhtml"/>
+                        </p:tab>
+                    </p:tabView>
+
+                    <p:outputPanel style="width: 100%;overflow: auto;display: block">
+                        <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
+                                         action="#{propertySectionVO.updateProperty()}"
+                                         update=":form:propertyDT" icon="ui-icon-plusthick"/>
+                        <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
+                                         onclick="PF('widSettingProperty').hide();" type="button"/>
+                    </p:outputPanel>
+
+                </p:dialog>
+        </h:form>
+
+        <h:form id="formLC">
+
+            <p:dialog id="dlgLifeCycle" header="#{textI18.setting_life_cycle_TT}" widgetVar="dlgLifeCycle" modal="false"
+                      showEffect="fade" hideEffect="fade" resizable="false" style="width: 700px; height: 650px">
+                <p:outputPanel style="width: 800px; height: 500px">
+                    <ui:include src="viewerLifeCycle.xhtml"/>
+                </p:outputPanel>
+
+                <p:outputPanel style="width: 100%;overflow: auto;display: block">
+                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
+                                     />
+                    <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
+                                     onclick="PF('dlgLifeCycle').hide();" type="button"/>
+                </p:outputPanel>
+
+            </p:dialog>
+
+        </h:form>
+
+    </h:body>
+
+</f:view>
+</html>
+

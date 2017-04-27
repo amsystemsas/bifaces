@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        >
+
+<f:view>
+
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Herramienta de Plantillas</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+    <div class="generic-container">
+        <div class="authbar">7
+            <span>Dear <strong>${loggedinuser}</strong>, You are not authorized to access this page.</span>
+            <span class="floatRight">
+                <a href="<c:url value=	\'/logout\'/>">Logout</a>
+
+            </span>
+        </div>
+    </div>
+</h:body>
+</f:view>
+
+
+</html>
