@@ -7,23 +7,25 @@ package com.cobus.util;
  */
 public enum CategoryName {
     
-    ROOT (0, "Root"),
-    GENERIC (1, "Generic"),
-    PRODUCT(2, "Product"),
-    POLICE(3, "Police"),
-    RISK_UNIT(4, "RiskUnit"),
-    INSURANCE_OBJECT(5, "InsuranceObject"),
-    COVERAGE(5, "Coverage"),
-    PARTICIPATION(6, "Participation"),
-    SUMMARY(7, "Summary"),
-    OTHER (3, "Other");
+    ROOT (0, "Root", "ROOT"),
+    PRODUCT(1, "Product", "PR"),
+    POLICY(2, "Policy", "POL"),
+    RISK_UNIT(3, "RiskUnit", "RU"),
+    INSURANCE_OBJECT(4, "InsuranceObject", "IO"),
+    COVERAGE(5, "Coverage", "COV"),
+    PARTICIPATION(6, "Participation", "CL"),
+    SUMMARY(7, "Summary", "SUM"),
+    GENERIC (8, "Generic", "GEN");
+
 
     private int value;
     private String label;
+    private String prefix;
 
-    private CategoryName(int value, String label) {
+    private CategoryName(int value, String label, String prefix) {
         this.value = value;
         this.label = label;
+        this.prefix = prefix;
     }
 
     public int getValue() {
@@ -42,7 +44,13 @@ public enum CategoryName {
         this.label = label;
     }
 
-    
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
     public static CategoryName valueOf(int value) {
         for (CategoryName ct : values()) {

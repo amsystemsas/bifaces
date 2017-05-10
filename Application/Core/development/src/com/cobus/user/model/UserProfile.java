@@ -17,17 +17,21 @@ public class UserProfile implements Serializable{
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idRole;
+    @Column(name = "IDROLE")
+    private Integer roleId;
 
-	@Column(name="TYPE", length=15, unique=true, nullable=false)
+	@Column(name="TYPE", length=20, unique=true, nullable=false)
     private String type;
 
-    public Integer getIdRole() {
-        return idRole;
+    @Column(name="DESCRIPTION", length=45, nullable=true)
+    private String description;
+
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setIdRole(Integer idRole) {
-        this.idRole = idRole;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
 	public String getType() {
@@ -38,41 +42,40 @@ public class UserProfile implements Serializable{
 		this.type = type;
 	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((idRole == null) ? 0 : idRole.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof UserProfile))
-            return false;
-        UserProfile other = (UserProfile) obj;
-        if (idRole == null) {
-            if (other.idRole != null)
-                return false;
-        } else if (!idRole.equals(other.idRole))
-            return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserProfile that = (UserProfile) o;
+
+        if (!roleId.equals(that.roleId)) return false;
+        if (!type.equals(that.type)) return false;
+
         return true;
     }
 
     @Override
-    public String toString() {
-        return "UserProfile [id=" + idRole + ", type=" + type + "]";
+    public int hashCode() {
+        int result = roleId.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
     }
 
+    @Override
+    public String toString() {
+        return "UserProfile{" +
+                "roleId=" + roleId +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
 

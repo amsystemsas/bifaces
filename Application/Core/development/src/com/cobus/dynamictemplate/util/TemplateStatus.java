@@ -7,7 +7,7 @@ package com.cobus.dynamictemplate.util;
  */
 public enum TemplateStatus {
     ACTIVE (1),
-    ANULED (2),
+    INACTIVE (2),
     DELETED(3);
     
     private int value;

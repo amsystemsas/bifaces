@@ -7,12 +7,12 @@
 
     <!-- <h:form> -->
     <h:outputText value="Propiedad: " />
-    <h:outputText value="#{propertySectionVO.selectedProp.name}" style="font-weight: bold" />
+    <h:outputText value="#{propertySectionView.selectedProp.name}" style="font-weight: bold" />
 
     <h:panelGrid style=" border: 3px double cornflowerblue;  border-radius: 5px;  margin: 5px 0px 0px 0px;" columns="4" cellpadding="5">
 
-        <p:outputLabel for="renderType" rendered="#{not empty propertySectionVO.selectedProp}" value="Tipo Render:" />
-        <p:selectOneMenu id="renderType" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.renderingType}" style="width:165px">
+        <p:outputLabel for="renderType" rendered="#{not empty propertySectionView.selectedProp}" value="Tipo Render:" />
+        <p:selectOneMenu id="renderType" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.renderingType}" style="width:165px">
             <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" />
             <f:selectItem itemLabel="Texto" itemValue="0" />
             <f:selectItem itemLabel="Area Texto" itemValue="1" />
@@ -25,32 +25,32 @@
 
         </p:selectOneMenu>
 
-        <h:outputLabel for="label" rendered="#{not empty propertySectionVO.selectedProp}" value="Etiqueta:" style="font-weight:bold" />
-        <p:inputText id="label" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.label}" />
+        <h:outputLabel for="label" rendered="#{not empty propertySectionView.selectedProp}" value="Etiqueta:" style="font-weight:bold" />
+        <p:inputText id="label" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.label}" />
 
-        <h:outputLabel for="validator" rendered="#{not empty propertySectionVO.selectedProp}" value="Expresion:" />
-        <p:inputText id="validator" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.expressionValidator}" />
+        <h:outputLabel for="validator" rendered="#{not empty propertySectionView.selectedProp}" value="Expresion:" />
+        <p:inputText id="validator" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.expressionValidator}" />
 
-        <h:outputLabel for="mask" rendered="#{not empty propertySectionVO.selectedProp}" value="Mascara:" />
-        <p:inputText id="mask" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.mask}" placeholder="Solo para propiedades Input" />
+        <h:outputLabel for="mask" rendered="#{not empty propertySectionView.selectedProp}" value="Mascara:" />
+        <p:inputText id="mask" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.mask}" placeholder="Solo para propiedades Input" />
 
-        <p:outputLabel for="parent" rendered="#{not empty propertySectionVO.selectedProp}" value="Propiedad Padre:" />
-        <p:selectOneMenu id="parent" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.parent}" style="width:165px">
+        <p:outputLabel for="parent" rendered="#{not empty propertySectionView.selectedProp}" value="Propiedad Padre:" />
+        <p:selectOneMenu id="parent" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.parent}" style="width:165px">
             <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" />
-            <f:selectItems  value="#{propertySectionVO.allProperty}" var="prop" itemLabel="#{prop.name}" itemValue="#{prop.propertyId}" />
+            <f:selectItems  value="#{propertySectionView.allProperty}" var="prop" itemLabel="#{prop.name}" itemValue="#{prop.propertyId}" />
         </p:selectOneMenu>
 
-        <h:outputLabel for="visible" rendered="#{not empty propertySectionVO.selectedProp}" value="Visible: " />
-        <p:selectBooleanButton id="visible" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.visible}" onLabel="Yes" offLabel="No" />
+        <h:outputLabel for="visible" rendered="#{not empty propertySectionView.selectedProp}" value="Visible: " />
+        <p:selectBooleanButton id="visible" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.visible}" onLabel="Yes" offLabel="No" />
 
-        <h:outputLabel for="defaultValue" rendered="#{not empty propertySectionVO.selectedProp}" value="Valor por Defecto:" />
-        <p:inputText id="defaultValue" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.defaultValue}" />
+        <h:outputLabel for="defaultValue" rendered="#{not empty propertySectionView.selectedProp}" value="Valor por Defecto:" />
+        <p:inputText id="defaultValue" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.defaultValue}" />
 
-        <h:outputLabel for="edit" rendered="#{not empty propertySectionVO.selectedProp}" value="Editable: " />
-        <p:selectBooleanButton id="edit" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.editable}" onLabel="Yes" offLabel="No"/>
+        <h:outputLabel for="edit" rendered="#{not empty propertySectionView.selectedProp}" value="Editable: " />
+        <p:selectBooleanButton id="edit" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.editable}" onLabel="Yes" offLabel="No"/>
 
-        <h:outputLabel for="required" rendered="#{not empty propertySectionVO.selectedProp}" value="Requerido: " />
-        <p:selectBooleanButton id="required" rendered="#{not empty propertySectionVO.selectedProp}" value="#{propertySectionVO.selectedProp.required}" onLabel="Yes" offLabel="No"/>
+        <h:outputLabel for="required" rendered="#{not empty propertySectionView.selectedProp}" value="Requerido: " />
+        <p:selectBooleanButton id="required" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.required}" onLabel="Yes" offLabel="No"/>
     </h:panelGrid>
 
 </ui:composition>

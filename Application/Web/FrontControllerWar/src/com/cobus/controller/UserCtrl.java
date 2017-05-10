@@ -13,8 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -30,7 +28,7 @@ import java.util.Locale;
 @Controller
 @RequestMapping("/")
 @SessionAttributes("roles")
-public class UserCtrl {
+public class UserCtrl extends GeneralCtrl{
 
     private static final Logger log = LogManager.getLogger(UserCtrl.class.getName());
 
@@ -81,8 +79,8 @@ public class UserCtrl {
 		 * framework as well while still using internationalized messages.
 		 *
 		 */
-        if (!userService.isUserSSOUnique(user.getIdUser(), user.getSsoId())) {
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+        if (!userService.isUserSSOUnique(user.getUserId(), user.getUserName())) {
+            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getUserName()}, Locale.getDefault()));
             result.addError(ssoError);
             return "registration";
         }
@@ -121,8 +119,8 @@ public class UserCtrl {
         }
 
 		/*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-		if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+		if(!userService.isUserSSOUnique(user.getId(), user.getUserName())){
+			FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getUserName()}, Locale.getDefault()));
 		    result.addError(ssoError);
 			return "registration";
 		}*/
@@ -150,7 +148,7 @@ public class UserCtrl {
 
     /**
      * This method returns the principal[user-name] of logged-in user.
-     */
+     *
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -163,6 +161,6 @@ public class UserCtrl {
         User user = userService.findBySSO(userName);
         return user.getFirstName().concat(" ").concat(user.getLastName());
     }
-
+*/
 
 }

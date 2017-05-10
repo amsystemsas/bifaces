@@ -22,11 +22,12 @@ public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUser;
+    @Column(name = "IDUSER")
+    private Integer userId;
 
     @NotEmpty
     @Column(name="USERNAME", unique=true, nullable=false)
-    private String ssoId;
+    private String userName;
 
     @NotEmpty
     @Column(name="PASSWORD", nullable=false)
@@ -44,10 +45,10 @@ public class User implements Serializable{
     @Column(name="EMAIL", nullable=false)
     private String email;
 
-    @Column(name = "INITDATE", nullable = false)
+    @Column(name = "INITIALDATE", nullable = false)
     private Date expeditionDate;
 
-    @Column(name = "ENDDATE", nullable = true)
+    @Column(name = "FINALDATE", nullable = true)
     private Date expirationDate;
 
     @NotNull
@@ -66,20 +67,20 @@ public class User implements Serializable{
             inverseJoinColumns = {@JoinColumn(name = "IDROLE")})
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
-    public Integer getIdUser() {
-        return idUser;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getSsoId() {
-        return ssoId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -158,8 +159,8 @@ public class User implements Serializable{
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((idUser == null) ? 0 : idUser.hashCode());
-        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        result = prime * result + ((userName == null) ? 0 : userName.hashCode());
         return result;
     }
 
@@ -172,15 +173,15 @@ public class User implements Serializable{
         if (!(obj instanceof User))
             return false;
         User other = (User) obj;
-        if (idUser == null) {
-            if (other.idUser != null)
+        if (userId == null) {
+            if (other.userId != null)
                 return false;
-        } else if (!idUser.equals(other.idUser))
+        } else if (!userId.equals(other.userId))
             return false;
-        if (ssoId == null) {
-            if (other.ssoId != null)
+        if (userName == null) {
+            if (other.userName != null)
                 return false;
-        } else if (!ssoId.equals(other.ssoId))
+        } else if (!userName.equals(other.userName))
             return false;
         return true;
     }
@@ -191,7 +192,7 @@ public class User implements Serializable{
      */
     @Override
     public String toString() {
-        return "User [id=" + idUser + ", ssoId=" + ssoId + ", password=" + password
+        return "User [id=" + userId + ", userName=" + userName + ", password=" + password
                 + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", email=" + email + "]";
     }

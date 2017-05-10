@@ -22,7 +22,7 @@
                 <p:dataTable id="userDT" var="user" value="#{userSectionVO.allUsers}" widgetVar="userTable"
                              emptyMessage="No user found with given criteria"
                              selection="#{userSectionVO.selectedUser}" selectionMode="single"
-                             rowKey="#{user.idUser}"
+                             rowKey="#{user.userId}"
                         >
 
                     <f:facet name="header">
@@ -48,7 +48,7 @@
                     </p:column>
 
                     <p:column headerText="Login">
-                        <h:outputText value="#{user.ssoId}"/>
+                        <h:outputText value="#{user.userName}"/>
                     </p:column>
 
                     <f:facet name="footer">

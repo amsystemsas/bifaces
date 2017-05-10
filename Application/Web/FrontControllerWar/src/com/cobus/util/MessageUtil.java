@@ -1,9 +1,13 @@
 package com.cobus.util;
 
 import org.primefaces.context.RequestContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.util.ResourceBundle;
 
 /**
  * Title: MessageUtil.java <br>
@@ -11,27 +15,31 @@ import javax.faces.context.FacesContext;
  * @author Jaime Aguilar (JAR)
  *         File Creation on 12/01/2017.
  */
-
+@Controller
+@ViewScoped
 public class MessageUtil {
 
-    public static void showMessage(String s, ErrorType error) {
+    @Autowired
+    private ResourceBundle rb;
+
+    public static void showMessage(NotificationType error, String title, String message) {
         switch (error.getValue()) {
             case 0:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, null, s));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, StringUtil.isEmpty(title)? NotificationType.INFO.getLabel() : title, message));
                 break;
             case 1:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, null, s));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, StringUtil.isEmpty(title)? NotificationType.WARN.getLabel() : title, message));
                 break;
             case 2:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, null, s));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, StringUtil.isEmpty(title)? NotificationType.ERROR.getLabel() : title, message));
                 break;
             case 3:
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, null, s));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, StringUtil.isEmpty(title)? NotificationType.FATAL.getLabel() : title, message));
                 break;
         }
     }
 
-    public static void showModalMessage(String msj, ErrorType error) {
+    public static void showModalMessage(String msj, NotificationType error) {
         FacesMessage message = null;
         switch (error.getValue()) {
             case 0:

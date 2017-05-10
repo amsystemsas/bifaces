@@ -1,7 +1,7 @@
 package com.cobus.generator;
 
-import com.cobus.dynamictemplate.setting.model.DynamicObject;
-import com.cobus.dynamictemplate.setting.services.IDynamicObjectService;
+import com.cobus.dynamictemplate.setting.model.Template;
+import com.cobus.dynamictemplate.setting.services.TemplateService;
 import com.cobus.util.PageMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,19 +19,19 @@ public class TestGenerator implements Serializable {
     private Integer templateId;
     private String templateName;
     private DataTemplate dataTemplate;
-    private IDynamicObjectService dynamicObjectBo;
+    private TemplateService templateService;
 
     private static final Logger log = LogManager.getLogger(TestGenerator.class.getName());
 
     public TestGenerator() {
     }
 
-    public IDynamicObjectService getDynamicObjectBo() {
-        return dynamicObjectBo;
+    public TemplateService getTemplateService() {
+        return templateService;
     }
 
-    public void setDynamicObjectBo(IDynamicObjectService dynamicObjectBo) {
-        this.dynamicObjectBo = dynamicObjectBo;
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
     }
 
     public String getTemplateName() {
@@ -58,14 +58,14 @@ public class TestGenerator implements Serializable {
         this.templateId = templateId;
     }
 
-    public List<DynamicObject> getAllTemplate(){
-        return dynamicObjectBo.loadAllTemplate();
+    public List<Template> getAllTemplate(){
+        return templateService.findAllTemplate();
     }
 
     public void onTemplateChange(){
         log.debug("templateName : " + templateName);
         if(templateName != null){
-            DynamicObject loadTemplate = dynamicObjectBo.loadTemplate(null, templateName);
+            Template loadTemplate = templateService.findTemplateByName(templateName);
             dataTemplate = new DataTemplate(loadTemplate, PageMode.CREATE);
 
         }else dataTemplate = null;

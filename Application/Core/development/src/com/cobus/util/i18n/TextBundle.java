@@ -117,7 +117,7 @@ public class TextBundle extends ResourceBundle {
             Map mapLabels = new HashMap();
             try {
                 while (rs.next()) {
-                    mapLabels.put(buildBundleKey(rs.getString("id_mt"), rs.getString("cod_mc"), rs.getString("locale")), rs.getString("message"));
+                    mapLabels.put(buildBundleKey(rs.getString("IDMT"), rs.getString("CODMC"), rs.getString("LOCALE")), rs.getString("VALUE"));
 
                 }
             } catch (SQLException e) {

@@ -30,7 +30,7 @@ public class MenuCtrl extends GeneralCtrl {
             log.debug("getWelcome is executed!");
         }
         //TODO: Cargar configuracion de Menu segun el usuario
-        return "menu";
+        return "index";
     }
 
     /**
@@ -74,10 +74,10 @@ public class MenuCtrl extends GeneralCtrl {
     /**
      * This method will provide the medium to add a new user.
      */
-    @RequestMapping(value = {"/testAdminFaces"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/menuviejo"}, method = RequestMethod.GET)
     public String goTestAdminFaces(ModelMap model) {
         model.addAttribute("loggedinuser", getPrincipal());
-        return "index";
+        return "menu";
     }
 
 }

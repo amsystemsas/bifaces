@@ -1,5 +1,6 @@
 package com.cobus.generator;
 
+import com.cobus.dynamictemplate.setting.model.IFProperty;
 import com.cobus.dynamictemplate.setting.model.Property;
 
 /**
@@ -9,17 +10,17 @@ import com.cobus.dynamictemplate.setting.model.Property;
  *         File Creation on 09/08/2016.
  */
 public class DataProperty {
-    Property property;
+    IFProperty property;
     String value;
 
     public DataProperty() {
     }
 
-    public DataProperty(Property property) {
+    public DataProperty(IFProperty property) {
         this.property = property;
     }
 
-    public Property getProperty() {
+    public IFProperty getProperty() {
         return property;
     }
 

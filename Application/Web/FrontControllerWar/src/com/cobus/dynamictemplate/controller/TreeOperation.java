@@ -2,12 +2,13 @@ package com.cobus.dynamictemplate.controller;
 
 
 import com.cobus.dynamictemplate.setting.bo.PropertyTree;
-import com.cobus.dynamictemplate.setting.model.DynamicObject;
-import com.cobus.dynamictemplate.setting.services.IDynamicObjectService;
-import com.cobus.dynamictemplate.setting.services.IPropertyTemplateService;
+import com.cobus.dynamictemplate.setting.model.IFProperty;
+import com.cobus.dynamictemplate.setting.model.PropertyTemplate;
+import com.cobus.dynamictemplate.setting.model.Template;
+import com.cobus.dynamictemplate.setting.services.TemplateService;
+import com.cobus.dynamictemplate.setting.services.PropertyTemplateService;
 import com.cobus.dynamictemplate.util.TemplateStatus;
-import com.cobus.dynamictemplate.vo.NodeVO;
-import com.cobus.dynamictemplate.vo.PropertyVO;
+import com.cobus.dynamictemplate.view.PropertyNode;
 import com.cobus.util.CategoryName;
 import com.cobus.util.NodeType;
 import org.apache.logging.log4j.LogManager;
@@ -38,63 +39,93 @@ public class TreeOperation implements Serializable{
     private static final Logger log = LogManager.getLogger(TreeOperation.class.getName());
 
     @Autowired
-    private IDynamicObjectService dynamicObjectService;
+    private TemplateService templateService;
 
     @Autowired
-    private IPropertyTemplateService propertyTemplateService;
+    private PropertyTemplateService propertyTemplateService;
 
-    public IDynamicObjectService getDynamicObjectService() {
-        return dynamicObjectService;
+    public TemplateService getTemplateService() {
+        return templateService;
     }
 
-    public void setDynamicObjectService(IDynamicObjectService dynamicObjectService) {
-        this.dynamicObjectService = dynamicObjectService;
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
     }
 
-    public IPropertyTemplateService getPropertyTemplateService() {
+    public PropertyTemplateService getPropertyTemplateService() {
         return propertyTemplateService;
     }
 
-    public void setPropertyTemplateService(IPropertyTemplateService propertyTemplateService) {
+    public void setPropertyTemplateService(PropertyTemplateService propertyTemplateService) {
         this.propertyTemplateService = propertyTemplateService;
     }
 
     public TreeNode create() {
         log.debug("**Inicio Arbol **");
-        TreeNode root = new DefaultTreeNode(new NodeVO(NodeType.ROOT, CategoryName.ROOT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.ROOT.getLabel()), null);
-        TreeNode generic = new DefaultTreeNode(new NodeVO(NodeType.ROOT, CategoryName.GENERIC.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.GENERIC.getLabel()), root);
-        TreeNode product = new DefaultTreeNode(new NodeVO(NodeType.ROOT, CategoryName.PRODUCT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.PRODUCT.getLabel()), root);
-        TreeNode other = new DefaultTreeNode(new NodeVO(NodeType.ROOT, CategoryName.OTHER.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.OTHER.getLabel()), root);
+        TreeNode root = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.ROOT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.ROOT.getLabel()), null);
+        TreeNode product = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.PRODUCT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.PRODUCT.getLabel()), root);
+        TreeNode policy = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.POLICY.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.POLICY.getLabel()), root);
+        TreeNode riskUnit = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.RISK_UNIT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.RISK_UNIT.getLabel()), root);
+        TreeNode insuranceObject = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.INSURANCE_OBJECT.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.INSURANCE_OBJECT.getLabel()), root);
+        TreeNode coverage = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.COVERAGE.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.COVERAGE.getLabel()), root);
+        TreeNode client = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.PARTICIPATION.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.PARTICIPATION.getLabel()), root);
+        TreeNode summary = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.SUMMARY.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.SUMMARY.getLabel()), root);
+        TreeNode generic = new DefaultTreeNode(new PropertyNode(NodeType.ROOT, CategoryName.GENERIC.getValue(), TemplateStatus.ACTIVE.getValue(), CategoryName.GENERIC.getLabel()), root);
 
-        HashMap<DynamicObject, List<PropertyTree>> dynamicObjList = dynamicObjectService.loadAllTemplateProperty();
+
+        HashMap<Template, List<PropertyTree>> dynamicObjList = templateService.findFullTemplateProperty();
         
         TreeNode childNode;
-        NodeVO tvo;
+        PropertyNode tvo;
         Integer category;
 
 
-        Iterator<Map.Entry<DynamicObject, List<PropertyTree>>> templateIterator = dynamicObjList.entrySet().iterator();
+        Iterator<Map.Entry<Template, List<PropertyTree>>> templateIterator = dynamicObjList.entrySet().iterator();
         
         while (templateIterator.hasNext()){
-            Map.Entry<DynamicObject, List<PropertyTree>> next = templateIterator.next();
-            DynamicObject dynamicObject = next.getKey();
+            Map.Entry<Template, List<PropertyTree>> next = templateIterator.next();
+            Template template = next.getKey();
+
+            log.debug("Template: " + template.toString());
         
-            tvo = new NodeVO(NodeType.TEMPLATE_NAME, dynamicObject.getCategory(), dynamicObject.getStatus(), dynamicObject.getName(), dynamicObject.getDoId());
-            category = dynamicObject.getCategory();
+            tvo = new PropertyNode(NodeType.TEMPLATE_NAME, template.getCategoryId(), template.getStatus(), template.getName(), template.getTemplateId());
+            category = template.getCategoryId();
 
             switch (category) {
+
                 case 1:
-                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, generic);
-                    loadChild(childNode, next.getValue());
-                    break;
-                case 2:
                     childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, product);
                     loadChild(childNode, next.getValue());
                     break;
-                case 3:
-                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, other);
+                case 2:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, policy);
                     loadChild(childNode, next.getValue());
                     break;
+                case 3:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, riskUnit);
+                    loadChild(childNode, next.getValue());
+                    break;
+                case 4:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, insuranceObject);
+                    loadChild(childNode, next.getValue());
+                    break;
+                case 5:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, coverage);
+                    loadChild(childNode, next.getValue());
+                    break;
+                case 6:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, client);
+                    loadChild(childNode, next.getValue());
+                    break;
+                case 7:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, summary);
+                    loadChild(childNode, next.getValue());
+                    break;
+                case 8:
+                    childNode = new DefaultTreeNode(NodeType.TEMPLATE_NAME.getLabel(), tvo, generic);
+                    loadChild(childNode, next.getValue());
+                    break;
+
             }
         }
       
@@ -103,37 +134,38 @@ public class TreeOperation implements Serializable{
     }
 
     //add a new template data into database
-    public void addTemplate(TreeNode selectedNode, NodeVO nodeVO) {
+    public void addTemplate(TreeNode selectedNode, PropertyNode propertyNode) {
 
         if (selectedNode != null) {
-            final NodeVO dataNode = (NodeVO) selectedNode.getData();
+            final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
             log.debug("nodeName = " + dataNode.getName() + "\tNodeCategory = " + dataNode.getCategory());
-            DynamicObject template = new DynamicObject();
-            template.setName(nodeVO.getName());
-            template.setCategory(dataNode.getCategory());
-            dynamicObjectService.addTemplate(template);
-            final NodeVO childNode = new NodeVO(NodeType.TEMPLATE_NAME, dataNode.getCategory(), TemplateStatus.ACTIVE.getValue(), nodeVO.getName());
+            Template template = new Template();
+            template.setName(propertyNode.getName());
+            template.setCategoryId(dataNode.getCategory());
+            templateService.addTemplate(template);
+            final PropertyNode childNode = new PropertyNode(NodeType.TEMPLATE_NAME, dataNode.getCategory(), TemplateStatus.ACTIVE.getValue(), propertyNode.getName());
             addChild(selectedNode, childNode, Boolean.FALSE);
 
         } 
 
     }
 
-    public void addPropertyToTemplate(TreeNode selectedNode, PropertyVO selectedProp) {
+    public void addPropertyToTemplate(TreeNode selectedNode, IFProperty selectedProp) {
         log.debug("asociando propiedad a plantilla");
+
         if (selectedNode != null) {
-            final NodeVO dataNode = (NodeVO) selectedNode.getData();
-            log.debug("nodeName = " + dataNode.getName() + "\tNodeCategory = " + dataNode.getCategory());
-            Integer propertyId = selectedProp.getPropertyId();
-            propertyTemplateService.addPropertyToTemplate(propertyId, dataNode.getId(), dataNode.getName());
-            final NodeVO childNode = new NodeVO(NodeType.PROPERTY, null, null, selectedProp.getName(), propertyId);
-            addChild(selectedNode, childNode, Boolean.TRUE);
+            PropertyNode propertyNode = new PropertyNode(selectedProp.getPropertyId(), selectedProp.getName(), NodeType.PROPERTY);
+            PropertyNode templateNode = (PropertyNode) selectedNode.getData();
+            PropertyTemplate propertyTemplate = new PropertyTemplate(selectedProp.getPropertyId(), templateNode.getId() , new Date());
+            propertyTemplateService.addPropertyToTemplate(propertyTemplate);
+            addChild(selectedNode, propertyNode, Boolean.TRUE);
 
         }
 
+
     }
 
-    public void addChild(TreeNode rootName, NodeVO childNode, Boolean isLeaf) {
+    public void addChild(TreeNode rootName, PropertyNode childNode, Boolean isLeaf) {
 
             List<TreeNode> children = rootName.getChildren();
             log.debug(" JRA -> Hijos, antes de: " + children.size());
@@ -152,7 +184,7 @@ public class TreeOperation implements Serializable{
     public void deleteTemplate(TreeNode selectedNode) {
         
         if (selectedNode != null) {
-            final NodeVO dataNode = (NodeVO) selectedNode.getData();
+            final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
             log.debug("nodeName = " + dataNode.getName() + "\tNodeType = " + dataNode.getNodeType().getLabel());
             if(dataNode.getNodeType().equals(NodeType.PROPERTY)){
                 log.debug("Desasociando Propiedad: " + dataNode.getName());
@@ -163,10 +195,10 @@ public class TreeOperation implements Serializable{
                 log.debug("Eliminando Plantilla: " + dataNode.getName());
             }
             
-            DynamicObject template = new DynamicObject();
+            Template template = new Template();
             template.setName(dataNode.getName());
-            template.setCategory(dataNode.getCategory());
-            dynamicObjectService.deleteTemplate(template);
+            template.setCategoryId(dataNode.getCategory());
+            templateService.deleteTemplate(template);
             removeChild(selectedNode, Boolean.FALSE);
         }
     }
@@ -176,11 +208,12 @@ public class TreeOperation implements Serializable{
             log.debug("isLeaf= TRUE");
             TreeNode parent = selectedNode.getParent();
             if(onlyChild) {
-                NodeVO dataNodeChild = (NodeVO)selectedNode.getData();
-                NodeVO dataNodeParent = (NodeVO)parent.getData();
+                PropertyNode dataNodeChild = (PropertyNode)selectedNode.getData();
+                PropertyNode dataNodeParent = (PropertyNode)parent.getData();
                 log.debug("dataNodeChild : " + dataNodeChild + "\tName : " + dataNodeChild.getName());
                 log.debug("dataNodeParent : " + dataNodeParent + "\tName : " + dataNodeParent.getName());
-                propertyTemplateService.deletePropertyToTemplate(dataNodeChild.getId(), dataNodeParent.getId(), dataNodeParent.getName());
+                PropertyTemplate propertyTemplate = new PropertyTemplate(dataNodeChild.getId(), dataNodeParent.getId());
+                propertyTemplateService.deletePropertyToTemplate(propertyTemplate);
             }
             parent.getChildren().remove(selectedNode);
             
@@ -203,9 +236,9 @@ public class TreeOperation implements Serializable{
     }
 
     private void loadChild(TreeNode root, List<PropertyTree> propertyList) {
-        log.debug("Padre: " + ((NodeVO)root.getData()).getName() + "\tHijos: " + propertyList.size());
+        log.debug("Padre: " + ((PropertyNode)root.getData()).getName() + "\tHijos: " + propertyList.size());
         for (PropertyTree prop : propertyList){
-            final NodeVO childNode = new NodeVO(NodeType.PROPERTY, null, null, prop.getName(), prop.getId());
+            final PropertyNode childNode = new PropertyNode(NodeType.PROPERTY, null, null, prop.getName(), prop.getId());
             addChild(root, childNode, Boolean.TRUE);
             
         }
@@ -216,8 +249,8 @@ public class TreeOperation implements Serializable{
 
         @Override
         public int compare(Object o1, Object o2) {
-            NodeVO u1 = (NodeVO) ((TreeNode) o1).getData();
-            NodeVO u2 = (NodeVO) ((TreeNode) o2).getData();
+            PropertyNode u1 = (PropertyNode) ((TreeNode) o1).getData();
+            PropertyNode u2 = (PropertyNode) ((TreeNode) o2).getData();
             int res = String.CASE_INSENSITIVE_ORDER.compare(u1.getName(), u2.getName());
             if (res == 0) {
                 res = u1.getName().compareTo(u2.getName());

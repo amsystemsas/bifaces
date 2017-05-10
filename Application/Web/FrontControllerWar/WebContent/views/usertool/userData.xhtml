@@ -32,7 +32,7 @@
 
         <!--Campo para registrar el Login-->
         <p:outputLabel for="login" value="Nombre Usuario:"/>
-        <p:inputText id="login" value="#{userSectionVO.userBean.ssoId}" style="width: 175px" label="Login"
+        <p:inputText id="login" value="#{userSectionVO.userBean.userName}" style="width: 175px" label="Login"
                      required="true">
             <f:validateLength minimum="6"/>
         </p:inputText>

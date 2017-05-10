@@ -5,30 +5,32 @@ package com.cobus.util;
  */
 public enum SymbolType {
 
-    COMMA(",", 1),
-    DOT(".", 2),
-    SEMI_COLON(";", 3),
-    COLON(":", 4),
-    SPACE(" ", 5),
-    LEFT_PARENTHESIS("(", 6),
-    RIGHT_PARENTHESIS(")", 7);
+    COMMA(","),
+    DOT("."),
+    SEMI_COLON(";"),
+    COLON(":"),
+    SPACE(" "),
+    LEFT_PARENTHESIS("("),
+    RIGHT_PARENTHESIS(")"),
+    UNDERSCORE("_"),
+    PIPE("|"),
+    AMPERSAND_SYMBOL("&"),
+    PLUS("+"),
+    BACKSLASH("\\"),
+    AT_SING("@");
 
     private final String value;
-    private final int code;
 
 
-    private SymbolType(String value, int code) {
+
+    private SymbolType(String value) {
         this.value = value;
-        this.code = code;
+
 
     }
 
     public String getValue() {
         return value;
-    }
-
-    public int getCode() {
-        return code;
     }
 
 

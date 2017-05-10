@@ -44,11 +44,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             log.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
-        UserInfo.setLoginUser(user.getSsoId());
-        //UserInfo.getUserInfo(user.getSsoId(),new Locale("es"));
+        UserInfo.setLoginUser(user.getUserName());
+        //UserInfo.getUserInfo(user.getUserName(),new Locale("es"));
         //userInfo.setLocale(new Locale("es"));
-        //userInfo.setLogin(user.getSsoId());
-        return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(),
+        //userInfo.setLogin(user.getUserName());
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 true, true, true, true, getGrantedAuthorities(user));
     }
 

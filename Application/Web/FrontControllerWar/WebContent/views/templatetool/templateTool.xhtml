@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/views/template/template.xhtml">
 
-<f:view>
-    <h:head>
-        <h:outputStylesheet name="css/mystyle.css"/>
-        <f:facet name="first">
-            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-            <title>#{textI18.template_tool_TT}</title>
-        </f:facet>
-    </h:head>
+    <ui:define name="title">
+        #{textI18.template_tool_TT}
+    </ui:define>
 
-    <h:body>
+    <ui:define name="description">
+    </ui:define>
+
+    <ui:define name="body">
         <h:form id="form" style="margin:auto;margin-top:2%;width:1024px;">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <p:layoutUnit position="center">
@@ -29,7 +26,6 @@
                             </p:row>
                             <p:row>
                                 <!--Header de Plantilla-->
-
                                 <p:column colspan="2">
                                     <p:menubar id="menuTemplate" style="width:300px; border-style: none">
                                         <f:facet name="options">
@@ -37,7 +33,7 @@
                                                          style="width: 195px;margin-right:2px;"
                                                          placeholder="#{textI18.template_name_TT}"
                                                          required="true"
-                                                         value="#{templateTreeVO.nodeVO.name}">
+                                                         value="#{templateTreeVO.templateName}">
                                                 <f:validateRegex pattern="^[a-zA-Z]+$" />
                                                 <f:validateLength minimum="2"/>
                                             </p:inputText>
@@ -54,20 +50,19 @@
                                 <p:column colspan="2">
                                     <p:menubar id="menuProperty" style="width: 354px; border-style: none">
                                         <f:facet name="options">
-
                                             <p:inputText id="propertyName" label="#{textI18.property_name_TT}"
                                                          style="width:184px;margin-right:2px"
                                                          placeholder="#{textI18.property_name_TT}"
                                                          required="true"
-                                                         value="#{propertySectionVO.propertyName}">
+                                                         value="#{propertySectionView.propertyName}">
                                                 <f:validateRegex pattern="^[a-zA-Z]+$" />
                                                 <f:validateLength minimum="2"/>
                                             </p:inputText>
 
                                             <p:commandButton value="#{textI18.save_TT}" style="margin-right:2px"
-                                                             action="#{propertySectionVO.addProperty}"
                                                              icon="ui-icon-plusthick"
                                                              process="@this propertyName propertyDT"
+                                                             action="#{propertySectionView.addProperty}"
                                                              update="propertyDT propertyName winMessageId">
                                             </p:commandButton>
                                             <p:commandButton value="#{textI18.find_TT}"/>
@@ -111,13 +106,15 @@
 
                                     <p:commandButton value="#{textI18.associate_TT}" style="margin-bottom: 10px"
                                                      icon="ui-icon-plusthick"
+                                                     process="@this templateTree propertyDT winMessageId"
                                                      action="#{templateTreeVO.associatePropertyTemplate}"
-                                                     update="templateTree templName winMessageId"/>
+                                                     update="templateTree winMessageId"/>
 
                                     <p:commandButton value="#{textI18.disassociate_TT}"
                                                      action="#{templateTreeVO.disassociatePropertyTemplate()}"
                                                      icon="ui-icon-mi   nusthick"
-                                                     update="templateTree templName winMessageId"/>
+                                                     process="@this templateTree winMessageId"
+                                                     update="templateTree winMessageId"/>
 
 
                                 </p:outputPanel>
@@ -126,9 +123,10 @@
                             </p:column>
 
                             <!--Seccion Tabla de Propiedades -->
+                            <pe:importEnum type="com.cobus.dynamictemplate.util.RenderingType" var="RenderingType" />
                             <p:column colspan="2" rowspan="2">
-                                <p:dataTable id="propertyDT" var="prop" value="#{propertySectionVO.allProperty}"
-                                             selection="#{propertySectionVO.selectedProp}" selectionMode="single"
+                                <p:dataTable id="propertyDT" var="prop" value="#{propertySectionView.properties}"
+                                             selection="#{propertySectionView.selectedProp}" selectionMode="single"
                                              rowKey="#{prop.name}"
                                              scrollable="true" scrollHeight="423">
 
@@ -136,7 +134,13 @@
                                         <h:outputText value="#{prop.name}"/>
                                     </p:column>
                                     <p:column headerText="#{textI18.type_TT}">
-                                        <h:outputText value="#{prop.renderingTypeLabel}"/>
+                                        <h:outputText value="#{prop.renderingType eq RenderingType.INPUT_TEXT.getValue() ? textI18.input_text_TT  :
+                                                               prop.renderingType eq RenderingType.TEXTAREA.getValue() ? textI18.text_area_TT    :
+                                                               prop.renderingType eq RenderingType.OPTION_LIST.getValue() ? textI18.list_TT :
+                                                               prop.renderingType eq RenderingType.RADIO_BUTTON.getValue() ? textI18.radio_TT :
+                                                               prop.renderingType eq RenderingType.CHECKBOX_LIST.getValue() ? textI18.check_list_TT :
+                                                               prop.renderingType eq RenderingType.CHECKBOX.getValue() ? textI18.check_TT :
+                                                               prop.renderingType eq RenderingType.DATE.getValue() ? textI18.date_TT : textI18.label_TT}"/>
                                     </p:column>
 
                                     <f:facet name="footer">
@@ -150,7 +154,7 @@
 
                                         <p:commandButton value="#{textI18.delete_TT}" icon="ui-icon-minusthick"
                                                          update="propertyDT"
-                                                         action="#{propertySectionVO.deleteProperty()}"/>
+                                                         action="#{propertySectionView.deleteProperty()}"/>
                                     </f:facet>
                                 </p:dataTable>
                             </p:column>
@@ -190,7 +194,7 @@
                     <p:tabView id="tabSetting" scrollable="true" cache="false"
                                style="margin:5px 0px 2px 0px;width:600px;">
                         <p:tab title="#{textI18.viewer_TT}">
-                            <ui:include src="viwerProperty.xhtml"/>
+                             <ui:include src="viwerProperty.xhtml"/>
                         </p:tab>
                         <p:tab title="#{textI18.list_value_TT}">
                             <ui:include src="valueListProperty.xhtml"/>
@@ -199,7 +203,7 @@
 
                     <p:outputPanel style="width: 100%;overflow: auto;display: block">
                         <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
-                                         action="#{propertySectionVO.updateProperty()}"
+                                         action="#{propertySectionView.updateProperty()}"
                                          update=":form:propertyDT" icon="ui-icon-plusthick"/>
                         <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
                                          onclick="PF('widSettingProperty').hide();" type="button"/>
@@ -207,9 +211,8 @@
 
                 </p:dialog>
         </h:form>
-
+<!--
         <h:form id="formLC">
-
             <p:dialog id="dlgLifeCycle" header="#{textI18.setting_life_cycle_TT}" widgetVar="dlgLifeCycle" modal="false"
                       showEffect="fade" hideEffect="fade" resizable="false" style="width: 700px; height: 650px">
                 <p:outputPanel style="width: 800px; height: 500px">
@@ -217,18 +220,29 @@
                 </p:outputPanel>
 
                 <p:outputPanel style="width: 100%;overflow: auto;display: block">
-                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
-                                     />
+                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"/>
                     <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
                                      onclick="PF('dlgLifeCycle').hide();" type="button"/>
                 </p:outputPanel>
-
             </p:dialog>
-
         </h:form>
+-->
+        <hr/>
 
-    </h:body>
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('dlg').jq.effect("shake", {times: 5}, 100);
+                }
+                else {
+                    PF('dlg').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>
+    </ui:define>
 
-</f:view>
-</html>
+   <!-- <ui:define name="code">
 
+    </ui:define>-->
+</ui:composition>

@@ -1,7 +1,8 @@
 package com.cobus.generator;
 
 
-import com.cobus.dynamictemplate.setting.model.DynamicObject;
+import com.cobus.dynamictemplate.setting.model.IFProperty;
+import com.cobus.dynamictemplate.setting.model.Template;
 import com.cobus.dynamictemplate.setting.model.Property;
 import com.cobus.util.PageMode;
 
@@ -15,11 +16,11 @@ import java.util.List;
  *         File Creation on 09/08/2016.
  */
 public class DataTemplate {
-    DynamicObject template;
+    Template template;
     List<DataProperty> dataProperties;
     PageMode pageMode;
 
-    public DataTemplate(DynamicObject template, PageMode pageMode) {
+    public DataTemplate(Template template, PageMode pageMode) {
         this.template = template;
         this.pageMode = pageMode;
         init();
@@ -27,7 +28,7 @@ public class DataTemplate {
 
     private void init() {
         dataProperties = new ArrayList<>();
-        for (Property prop : template.getPropertyList()){
+        for (IFProperty prop : template.getPropertyList()){
             dataProperties.add(new DataProperty(prop));
         }
     }
@@ -40,11 +41,11 @@ public class DataTemplate {
         this.pageMode = pageMode;
     }
 
-    public DynamicObject getTemplate() {
+    public Template getTemplate() {
         return template;
     }
 
-    public void setTemplate(DynamicObject template) {
+    public void setTemplate(Template template) {
         this.template = template;
     }
 

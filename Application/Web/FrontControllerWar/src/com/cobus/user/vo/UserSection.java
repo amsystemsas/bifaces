@@ -5,8 +5,6 @@ import com.cobus.user.bean.UserBean;
 import com.cobus.user.model.User;
 import com.cobus.user.model.UserProfile;
 import com.cobus.util.ComponentOperation;
-import com.cobus.util.ErrorType;
-import com.cobus.util.MessageUtil;
 import com.cobus.util.OperationType;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -61,7 +59,7 @@ public class UserSection implements Serializable {
     public void init() {
         allUsers = userOperation.loadAllUsers();
         List<UserProfile> userProfiles = userOperation.allProfile();
-        roles = new LinkedHashMap<String, UserProfile>();
+        roles = new LinkedHashMap<>();
         roleList = new ArrayList<>();
         for (UserProfile up : userProfiles) {
             roles.put(up.getType(), up);
@@ -77,13 +75,15 @@ public class UserSection implements Serializable {
     }
 
     public void saveUser() {
+        /*
         if (operation == OperationType.CREATE) {
             selectedUser = new User();
         }
+        */
         selectedUser.setFirstName(userBean.getFirstName());
         selectedUser.setLastName(userBean.getLastName());
         selectedUser.setEmail(userBean.getEmail());
-        selectedUser.setSsoId(userBean.getSsoId());
+        selectedUser.setUserName(userBean.getUserName());
         selectedUser.setPassword(userBean.getPassword());
         selectedUser.setExpirable(expirable == Boolean.TRUE ? 1 : 0);
         selectedUser.setExpeditionDate(new Date());
@@ -108,7 +108,7 @@ public class UserSection implements Serializable {
         userBean.setFirstName(selectedUser.getFirstName());
         userBean.setLastName(selectedUser.getLastName());
         userBean.setEmail(selectedUser.getEmail());
-        userBean.setSsoId(selectedUser.getSsoId());
+        userBean.setUserName(selectedUser.getUserName());
         userBean.setPassword(selectedUser.getPassword());
         expirable = selectedUser.getExpirable() > 0 ? Boolean.TRUE : Boolean.FALSE;
 
@@ -128,7 +128,8 @@ public class UserSection implements Serializable {
             ComponentOperation.updateComponent("formUser:tabUserSetting");
             ComponentOperation.executeComponent("PF('widUserTool').show();");
         } else {
-            MessageUtil.showMessage("Error", ErrorType.ERROR);
+
+            //MessageUtil.showMessage("Error", ErrorType.ERROR);
         }
     }
 

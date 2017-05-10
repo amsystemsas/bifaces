@@ -39,7 +39,7 @@ public class UserDao extends AbstractDao<Integer, User> implements IUserDao {
     public User findBySSO(String sso) {
         log.info("SSO : {}" + sso);
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
+        crit.add(Restrictions.eq("userName", sso));
         User user = (User)crit.uniqueResult();
         if(user!=null){
             Hibernate.initialize(user.getUserProfiles());

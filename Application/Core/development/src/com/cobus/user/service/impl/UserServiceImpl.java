@@ -52,12 +52,12 @@ public class UserServiceImpl implements UserService {
      * It will be updated in db once transaction ends.
      */
     public boolean updateUser(User user) {
-        User entity = dao.findById(user.getIdUser());
+        User entity = dao.findById(user.getUserId());
         flag = true;
 
         try {
             if (entity != null) {
-                entity.setSsoId(user.getSsoId());
+                entity.setUserName(user.getUserName());
                 if (!user.getPassword().equals(entity.getPassword())) {
                     entity.setPassword(passwordEncoder.encode(user.getPassword()));
                 }
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     public boolean isUserSSOUnique(Integer id, String sso) {
         User user = findBySSO(sso);
-        return (user == null || ((id != null) && (user.getIdUser() == id)));
+        return (user == null || ((id != null) && (user.getUserId() == id)));
     }
 
 }
