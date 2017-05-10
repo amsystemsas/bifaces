@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Title: IFProperty.java
- * @author jaguilar (JAR)
+ * @author Jaime Aguilar (JAR)
  * File Creation on 20/07/2016
  */
 public interface IFProperty extends Serializable{

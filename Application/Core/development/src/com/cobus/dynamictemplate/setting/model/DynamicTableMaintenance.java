@@ -1,5 +1,7 @@
 package com.cobus.dynamictemplate.setting.model;
 
+import com.cobus.util.CategoryName;
+import com.cobus.util.SymbolType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,13 +12,13 @@ import java.util.List;
  * @author jaguilar (JAR)
  * File Creation on 05/07/2016
  */
-public class DynamicTableMaintenance extends DynamicObject implements IFDynamicTableMaintenance{
+public class DynamicTableMaintenance extends Template implements IFDynamicTableMaintenance{
     private static final String SUFFIX_STRING = "STR";
     private static final String SUFFIX_VALUE = "VALUE";
     private static final Logger log = LogManager.getLogger(DynamicTableMaintenance.class.getName());
 
-    public DynamicTableMaintenance(String desc) {
-        super(desc);
+    public DynamicTableMaintenance(String desc, Integer categoryId) {
+        super(desc, categoryId);
     }   
     
 
@@ -24,8 +26,9 @@ public class DynamicTableMaintenance extends DynamicObject implements IFDynamicT
     public String getGenerateCreateQuery() {
         log.debug("** Creando Tabla Dinamica**");
         StringBuilder query = new StringBuilder();
-        query.append("CREATE TABLE ").append(getName()).append(" (IDDT INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador Tabla Dinamica Generada', ");
-        query.append("PRIMARY KEY (IDDT   ) COMMENT '')");
+        query.append("CREATE TABLE ").append(CategoryName.valueOf(getCategoryId()).getPrefix().concat(SymbolType.UNDERSCORE.getValue()))
+                .append(getName()).append(" (PKT INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador Tabla Dinamica Generada', ")
+                .append("PRIMARY KEY (PKT ) COMMENT '')");
         return query.toString();
         
     }

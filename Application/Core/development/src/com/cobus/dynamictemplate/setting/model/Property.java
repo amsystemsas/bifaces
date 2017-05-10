@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Title: Property.java
  *
- * @author jaguilar (JAR) 
+ * @author Jaime Aguilar (JAR)
  * File Creation on 03/04/2016
  */
 public class Property implements IFProperty{
@@ -23,9 +23,10 @@ public class Property implements IFProperty{
     private String parent;
     private String mask;
     private List<PropertyOptionItem> propertyOptionItems;
+    private List<Template> templateAssociated;
 
-    public Property() {
-    }
+
+    public Property() { }
 
     public Property(Integer propertyId, String name, String label, int type, int renderingType,
                     String expressionValidator, String formula, String defaultValue,

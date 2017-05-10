@@ -1,7 +1,7 @@
 package com.cobus.dynamictemplate.setting.services.impl;
 
-import com.cobus.dynamictemplate.setting.dao.DynamicObjectPropDao;
-import com.cobus.dynamictemplate.setting.services.IPropertyTemplateService;
+import com.cobus.dynamictemplate.setting.dao.PropertyTemplateDao;
+import com.cobus.dynamictemplate.setting.model.PropertyTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,37 +16,39 @@ import java.util.List;
 
 @Service("propertyTemplateService")
 @Transactional
-public class PropertyTemplateService implements IPropertyTemplateService {
+public class PropertyTemplateService implements com.cobus.dynamictemplate.setting.services.PropertyTemplateService {
     
     @Autowired
-    private DynamicObjectPropDao dynamicObjectPropDao;
+    private PropertyTemplateDao propertyTemplateDao;
 
     
     @Override
-    public void addPropertyToTemplate(Integer idProperty, Integer idDynamicObject, String templateName) {
-        dynamicObjectPropDao.save(idProperty, idDynamicObject, templateName);
+    public boolean addPropertyToTemplate(PropertyTemplate propertyTemplate) {
+        return propertyTemplateDao.save(propertyTemplate);
     }
 
     @Override
-    public void deletePropertyToTemplate(Integer idProperty, Integer idDynamicObject, String templateName) {
-        dynamicObjectPropDao.delete(idProperty, idDynamicObject, templateName);
+    public boolean deletePropertyToTemplate(PropertyTemplate propertyTemplate) {
+        return propertyTemplateDao.delete(propertyTemplate);
     }
 
     @Override
-    public List<Integer> getPropertyIdList(Integer idDynamicObject) {
-        return dynamicObjectPropDao.getPropertyIdList(idDynamicObject);
-    }
-    
-    
-
-    public DynamicObjectPropDao getDynamicObjectPropDao() {
-        return dynamicObjectPropDao;
+    public boolean isPropertyAssociated(Integer propertyId) {
+        return propertyTemplateDao.isPropertyAssociatedToTemplate(propertyId);
     }
 
-    public void setDynamicObjectPropDao(DynamicObjectPropDao dynamicObjectPropDao) {
-        this.dynamicObjectPropDao = dynamicObjectPropDao;
+    @Override
+    public boolean hasTemplateProperties(Integer templateId) {
+        return propertyTemplateDao.hasTemplateProperties(templateId);
     }
-    
-    
 
+    @Override
+    public List<Integer> findTemplateListByProperty(Integer propertyId) {
+        return propertyTemplateDao.loadTemplateByPropertyId(propertyId);
+    }
+
+    @Override
+    public List<Integer> findPropertyListByTemplate(Integer templateId) {
+        return propertyTemplateDao.loadPropertyByTemplateId(templateId);
+    }
 }

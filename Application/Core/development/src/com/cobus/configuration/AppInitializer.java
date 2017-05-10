@@ -10,8 +10,9 @@ import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 
 /**
+ * Clase encargada de cargar las clases de configuraciones del aplicativo
+ *
  * Title: AppInitializer.java <br>
- * Clase encargada de cargar las <ttclases de configuraciones del aplicativo
  *
  * @author Jaime Aguilar (JAR)
  *         File Creation on 07/09/2016.

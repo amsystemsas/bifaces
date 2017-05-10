@@ -1,28 +1,30 @@
 package com.cobus.dynamictemplate.setting.model;
 
 /**
- * Title: CategoryTemplate.java
- * @author jaguilar (JAR)
- * File Creation on 24/04/2016
+ * Title: CategoryTemplate.java <br>
+ *
+ * @author Jaime Aguilar (JAR)
+ *         File Creation on 03/05/2017.
  */
-public enum CategoryTemplate {
-    
-    GENERIC(1, "label.generic");
-    
-    private int value;
+
+
+public class CategoryTemplate {
+    private Integer ctId;
     private String name;
+    private String description;
 
-    private CategoryTemplate(int value, String name) {
-        this.value = value;
+    public CategoryTemplate(Integer ctId, String name, String description) {
+        this.ctId = ctId;
         this.name = name;
+        this.description = description;
     }
 
-    public int getValue() {
-        return value;
+    public Integer getCtId() {
+        return ctId;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setCtId(Integer ctId) {
+        this.ctId = ctId;
     }
 
     public String getName() {
@@ -32,17 +34,12 @@ public enum CategoryTemplate {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public static CategoryTemplate valueOf(int value) {
-        for (CategoryTemplate ct : values()) {
-            if (ct.getValue() == value) {
-                return ct;
-            }
-        }
-        return null;
-    }
-    
-    
-    
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
