@@ -26,7 +26,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "com.cobus.configuration" })
+@ComponentScan({ "com.amsystem.bifaces.configuration" })
 @PropertySource("classpath:/config/database/jdbc.properties")
 public class HibernateConfiguration {
 
@@ -37,7 +37,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.cobus" });
+        sessionFactory.setPackagesToScan(new String[] { "com.amsystem.bifaces" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

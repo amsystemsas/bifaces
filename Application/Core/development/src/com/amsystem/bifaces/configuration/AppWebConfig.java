@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.cobus")
+@ComponentScan(basePackages = "com.amsystem.bifaces")
 public class AppWebConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired

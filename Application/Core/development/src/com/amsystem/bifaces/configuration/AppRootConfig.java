@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  */
 
 @Configuration
-@ComponentScan({"com.cobus"})
+@ComponentScan({"com.amsystem.bifaces"})
 @Import(value = {SecurityConfiguration.class, HibernateConfiguration.class})
 public class AppRootConfig {
     // application domain @Beans here...
