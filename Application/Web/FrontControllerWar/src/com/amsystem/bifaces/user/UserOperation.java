@@ -77,10 +77,10 @@ public class UserOperation {
      */
     public void deleteUser(User selectedUser) {
         if (userService.deleteUserBySSO(selectedUser.getUserName())) {
-            MessageUtil.showModalMessage("Usuario eliminado exitosamente", NotificationType.INFO);
+            MessageUtil.showModalMessage(NotificationType.INFO, "Usuario eliminado exitosamente");
             ComponentOperation.updateComponent("formUser:userDT");
         } else {
-            MessageUtil.showModalMessage("Error", NotificationType.INFO);
+            MessageUtil.showModalMessage(NotificationType.INFO, "Error");
         }
     }
 

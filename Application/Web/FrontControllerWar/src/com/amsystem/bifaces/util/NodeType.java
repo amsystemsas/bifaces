@@ -7,7 +7,7 @@ package com.amsystem.bifaces.util;
  */
 public enum NodeType {
     
-    ROOT (0, "TEMP"),
+    ROOT (0, "ROOT"),
     TEMPLATE_NAME (1, "TEMP"),
     PROPERTY(2,"PROP");
     

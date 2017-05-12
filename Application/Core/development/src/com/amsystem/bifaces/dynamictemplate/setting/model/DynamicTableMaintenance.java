@@ -36,7 +36,8 @@ public class DynamicTableMaintenance extends Template implements IFDynamicTableM
     @Override
     public String getGenerateDropQuery() {
         StringBuilder query = new StringBuilder();
-        query.append("DROP TABLE IF EXISTS ").append(getName());
+        query.append("DROP TABLE IF EXISTS ").append(CategoryName.valueOf(getCategoryId()).getPrefix().concat(SymbolType.UNDERSCORE.getValue()))
+                                        .append(getName());
         return query.toString();
     } 
 
@@ -74,7 +75,8 @@ public class DynamicTableMaintenance extends Template implements IFDynamicTableM
     @Override
     public String getCountRowQuery() {
         StringBuilder query = new StringBuilder();
-        query.append(" SELECT COUNT(*) FROM ").append(getName());
+        query.append(" SELECT COUNT(*) FROM ").append(CategoryName.valueOf(getCategoryId()).getPrefix().concat(SymbolType.UNDERSCORE.getValue()))
+                .append(getName());
         return query.toString();
     }
     

@@ -79,9 +79,9 @@ public class PropertyOperation implements Serializable{
         IFProperty property = new Property();
         property.setName(propertyName);
         if(propertyService.addProperty(propertyName)){
-            MessageUtil.showMessage(NotificationType.INFO, rb.getString(NotificationType.INFO.getLabel().concat("_GRL")), rb.getString("property.save.success_TT")) ;
+            MessageUtil.showMessage(NotificationType.INFO, rb.getString(NotificationType.INFO.getLabel().concat("_GRL")), rb.getString("property_save_success_TT")) ;
         }else{
-            MessageUtil.showMessage(NotificationType.ERROR, rb.getString(NotificationType.ERROR.getLabel().concat("_GRL")), rb.getString("property.error.save_TT"));
+            MessageUtil.showMessage(NotificationType.ERROR, rb.getString(NotificationType.ERROR.getLabel().concat("_GRL")), rb.getString("property_error_save_TT"));
         }
 
     }

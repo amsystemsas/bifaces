@@ -39,7 +39,7 @@ public class MessageUtil {
         }
     }
 
-    public static void showModalMessage(String msj, NotificationType error) {
+    public static void showModalMessage(NotificationType error, String msj) {
         FacesMessage message = null;
         switch (error.getValue()) {
             case 0:
@@ -58,6 +58,13 @@ public class MessageUtil {
 
         RequestContext.getCurrentInstance().showMessageInDialog(message);
 
+
+    }
+
+    public static void updateExecute(String componentUpdateName, String componentExecuteName) {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        if(!StringUtil.isEmptyOrNullValue(componentUpdateName))  requestContext.update(componentUpdateName);
+        if(!StringUtil.isEmptyOrNullValue(componentExecuteName))  requestContext.execute(componentExecuteName);
     }
 
 

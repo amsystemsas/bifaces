@@ -57,7 +57,7 @@ public class PropertySectionView implements Serializable{
 
 
     /**
-     *  Agrega una nueva propiedad al negocio
+     *  Agrega una nueva propiedad
      */
     public void addProperty() {
         log.debug("Agregando Propiedad : " + getPropertyName());
@@ -108,7 +108,8 @@ public class PropertySectionView implements Serializable{
      * @return <tt>Lista</tt> de opciones de la propiedad
      */
     public List<PropertyOptionItem> getAllPropertyOptionItem(){
-        return service.getAllPropertyOptionItem(selectedProp.getPropertyId());
+
+        return (selectedProp != null) ? service.getAllPropertyOptionItem(selectedProp.getPropertyId()) : null;
     }
 
 

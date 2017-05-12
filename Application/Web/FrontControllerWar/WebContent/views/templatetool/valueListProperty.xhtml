@@ -8,7 +8,7 @@
     <!--    <h:form>-->
     <h:outputText value="#{textI18.property_TT}: "/>
     <h:outputText rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.name}" style="font-weight: bold" />
-    <p:dataTable id="optionItemDT" rendered="#{not empty propertySectionView.selectedProp}"  var="prop" value="#{propertySectionView.allPropertyOptionItem}"
+    <p:dataTable id="optionItemDT" rendered="#{propertySectionView.selectedProp ne null}"  var="prop" value="#{propertySectionView.allPropertyOptionItem}"
                  selection="#{propertySectionView.optionItem}" selectionMode="single" rowKey="#{prop.value}"
                  scrollable="true" scrollHeight="150">
         <f:facet name="header">

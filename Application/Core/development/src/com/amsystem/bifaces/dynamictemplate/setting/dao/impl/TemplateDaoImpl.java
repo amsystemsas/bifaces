@@ -39,8 +39,8 @@ public class TemplateDaoImpl extends AbstractDao<Integer, Template> implements T
         DynamicTableMaintenance dtm = new DynamicTableMaintenance(template.getName(), template.getCategoryId());
 
         try {
-            jdbcTemplate.execute(dtm.getGenerateCreateQuery()); //Creando Tabla Dinamica
             rowAffected = jdbcTemplate.update(sql, template.getCategoryId(), template.getName());
+            if(rowAffected > 0)jdbcTemplate.execute(dtm.getGenerateCreateQuery()); //Creando Tabla Dinamica
         } catch (Exception e) {
             log.debug("Error: " + e.getMessage());
         }

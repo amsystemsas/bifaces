@@ -48,7 +48,7 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public boolean deleteTemplate(Template template) {
         boolean success = false;
-        if(!propertyTemplateDao.hasTemplateProperties(template.getTemplateId()))
+        //if(!propertyTemplateDao.hasTemplateProperties(template.getTemplateId()))
             success = templateDao.deleteTemplate(template);
 
         return success;

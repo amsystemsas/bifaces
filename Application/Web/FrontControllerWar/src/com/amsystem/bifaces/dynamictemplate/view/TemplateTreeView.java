@@ -13,63 +13,64 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
- * Title: TemplateTreeVO.java
+ * Title: TemplateTreeView.java
  *
  * @author jaguilar (JAR) File Creation on 24/04/2016
  */
 
-@ManagedBean(name = "templateTreeVO")
+@ManagedBean(name = "templateTreeView")
 @ViewScoped
-public class TemplateTreeVO implements Serializable {
+public class TemplateTreeView implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //Raiz del arbol de plantillas
     private TreeNode root;
-
+    //Nodo seleccionado en el arbol de plantillas
     private TreeNode selectedNode;
-
+    //Nombre de la plantilla a ser registrada
     private String templateName;
 
     @ManagedProperty("#{propertySectionView}")
+    //Seccion de tabla de propiedades
     private PropertySectionView propertySectionView;
 
     @ManagedProperty("#{nodeVO}")
+    //Nodo arbol de plantillas
     private PropertyNode propertyNode;
 
     @ManagedProperty("#{treeOperation}")
-    private TreeOperation treeOperation;
+    //Operaciones arbol de plantillas
+    private TreeOperation service;
 
     @PostConstruct
     public void init() {
-        root = treeOperation.create();
+        root = service.create();
     }
 
-    //add a new property data into database
+
+    /**
+     * Agrega una nueva plantilla al arbol
+     */
     public void addTemplate() {
-
-        if (selectedNode != null) {
-                PropertyNode newTemplate = new PropertyNode(templateName);
-
-                treeOperation.addTemplate(selectedNode, newTemplate);
-            setTemplateName(null);
-        } else {
-            showMessage();
-            //getPropertyNode().setName(null);
-        }
-
+        service.addTemplate(selectedNode, templateName);
+        setTemplateName(null);
     }
 
-
+    /**
+     * Elimina un plantilla del arbol. Si la plantilla tiene almenos una propiedad asociada, se invoca el metodo <tt>confirmationDeleteTemplate</tt>
+     */
     public void deleteTemplate() {
+        service.deleteTemplate(selectedNode, false);
+        // getPropertyNode().setName(null);
+    }
 
-        if (selectedNode != null) {
-            treeOperation.deleteTemplate(selectedNode);
-            getPropertyNode().setName(null);
-        } else {
-            showMessage();
-            getPropertyNode().setName(null);
-        }
-
+    /**
+     * Elimina un plantilla del arbol con propiedades asociadas
+     */
+    public void confirmationDeleteTemplate() {
+        service.deleteTemplate(selectedNode, true);
+        // getPropertyNode().setName(null);
     }
 
     public void associatePropertyTemplate() {
@@ -77,7 +78,7 @@ public class TemplateTreeVO implements Serializable {
         if (propertySectionView.getSelectedProp() != null && selectedNode != null) {
             final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
             if (dataNode.getNodeType() == NodeType.TEMPLATE_NAME) {
-                treeOperation.addPropertyToTemplate(selectedNode, propertySectionView.getSelectedProp());
+                service.addPropertyToTemplate(selectedNode, propertySectionView.getSelectedProp());
             } else {
                 showMessage();
             }
@@ -92,7 +93,7 @@ public class TemplateTreeVO implements Serializable {
         if (selectedNode != null) {
             final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
             if (dataNode.getNodeType() == NodeType.PROPERTY) {
-                treeOperation.removeChild(selectedNode, true);
+                service.removeChild(selectedNode, true);
 
             } else {
                 showMessage();
@@ -127,12 +128,12 @@ public class TemplateTreeVO implements Serializable {
         this.propertyNode = propertyNode;
     }
 
-    public TreeOperation getTreeOperation() {
-        return treeOperation;
+    public TreeOperation getService() {
+        return service;
     }
 
-    public void setTreeOperation(TreeOperation treeOperation) {
-        this.treeOperation = treeOperation;
+    public void setService(TreeOperation service) {
+        this.service = service;
     }
 
     public PropertySectionView getPropertySectionView() {
