@@ -1,0 +1,72 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+    <!-- <h:form> -->
+    <h:panelGrid style=" width: 100%; border: 3px double cornflowerblue;  border-radius: 5px;  margin: 5px 0px 0px 0px;"
+                 columns="4"
+                 cellpadding="5">
+
+        <!--Campo para registrar el/los Nombres-->
+        <p:outputLabel for="firstName" value="Nombres:"/>
+        <p:inputText id="firstName" value="#{userSectionVO.userBean.firstName}" style="width: 175px" label="Nombres"
+                     required="true">
+            <f:validateLength minimum="2"/>
+        </p:inputText>
+
+        <!--Campo para registrar el/los Apellidos-->
+        <p:outputLabel for="lastname" value="Apellidos:"/>
+        <p:inputText id="lastname" value="#{userSectionVO.userBean.lastName}" style="width: 175px" label="Apellidos"
+                     required="true">
+            <f:validateLength minimum="2"/>
+        </p:inputText>
+
+        <!--Campo para registrar el Correo Electronico-->
+        <p:outputLabel for="email" value="Email:"/>
+        <p:inputText id="email" value="#{userSectionVO.userBean.email}" style="width: 175px"
+                     placeholder="Ej: micorreo@ejemplo.com" label="Email" required="true"/>
+
+
+        <!--Campo para registrar el Login-->
+        <p:outputLabel for="login" value="Nombre Usuario:"/>
+        <p:inputText id="login" value="#{userSectionVO.userBean.userName}" style="width: 175px" label="Login"
+                     required="true">
+            <f:validateLength minimum="6"/>
+        </p:inputText>
+
+        <!--Campo para registrar la clave del usuario-->
+        <p:outputLabel for="passw" value="Clave:"/>
+        <p:password id="passw" value="#{userSectionVO.userBean.password}" match="password" label="Clave" feedback="true"
+                    required="true">
+        </p:password>
+
+        <!--Campo para confirmar el registro de la clave del usuario-->
+        <p:outputLabel for="password" value="Confirme Clave:"/>
+        <p:password id="password" value="#{userSectionVO.userBean.password}" label="Confirme Clave" feedback="true"
+                    required="true">
+        </p:password>
+
+        <!--Campo para registrar el Rol del Usuario-->
+        <p:outputLabel for="profile" value="Rol/Grupo:"/>
+        <p:selectCheckboxMenu id="profile" style="width:165px" required="true" label="Roles"
+                              value="#{userSectionVO.selectedProfile}">
+            <f:selectItems value="#{userSectionVO.roleList}"/>
+        </p:selectCheckboxMenu>
+
+        <!--Campo para registrar si el usuario es expirable-->
+        <h:outputLabel for="expirable" value="Expirable: "/>
+        <p:selectBooleanButton id="expirable" value="#{userSectionVO.expirable}" onLabel="Si" offLabel="No">
+            <p:ajax update="maskDate"/>
+        </p:selectBooleanButton>
+
+        <!--Campo para registrar Fecha Expiracion-->
+        <p:outputLabel for="maskDate" value="Fecha expiracion:"/>
+        <p:calendar id="maskDate" value="#{userSectionVO.userBean.expirationDate}"
+                    pattern="dd-MM-yyyy" mask="true" disabled="#{!userSectionVO.expirable}"/>
+
+    </h:panelGrid>
+
+</ui:composition>

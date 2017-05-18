@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="TRACE">
+
+    <Appenders>
+        <!-- 1. Console Appender -->
+        <Console name="ConsoleAppender" target="System.out">
+            <PatternLayout pattern="[%5p] (%d) [%c{1}] - %m%n"/>
+        </Console>
+
+        <!-- 2. File Appender with file "${HOME_DOMAIN}/COTI_Log4j.log" -->
+        <RollingFile name="RollingFile" fileName="COTI_Log4j.log"
+                     filePattern="${log-path}/myexample-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>%d{dd/MMM/yyyy HH:mm:ss,SSS}- %c{1}: %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="4"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.cobus" level="TRACE" additivity="false">
+            <appender-ref ref="RollingFile" level="TRACE"/>
+            <appender-ref ref="ConsoleAppender" level="TRACE"/>
+        </Logger>
+
+        <Logger name="org.hibernate.sql" level="INFO" additivity="false">
+            <appender-ref ref="RollingFile" level="INFO"/>
+            <appender-ref ref="ConsoleAppender" level="INFO"/>
+        </Logger>
+
+
+        <Root level="TRACE" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="ConsoleAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

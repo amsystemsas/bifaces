@@ -1,0 +1,56 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+    <!-- <h:form> -->
+    <h:outputText value="Propiedad: " />
+    <h:outputText value="#{propertySectionView.selectedProp.name}" style="font-weight: bold" />
+
+    <h:panelGrid style=" border: 3px double cornflowerblue;  border-radius: 5px;  margin: 5px 0px 0px 0px;" columns="4" cellpadding="5">
+
+        <p:outputLabel for="renderType" rendered="#{not empty propertySectionView.selectedProp}" value="Tipo Render:" />
+        <p:selectOneMenu id="renderType" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.renderingType}" style="width:165px">
+            <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" />
+            <f:selectItem itemLabel="Texto" itemValue="0" />
+            <f:selectItem itemLabel="Area Texto" itemValue="1" />
+            <f:selectItem itemLabel="Lista" itemValue="2" />
+            <f:selectItem itemLabel="Redio" itemValue="3" />
+            <f:selectItem itemLabel="Lista de Check Box" itemValue="4" />
+            <f:selectItem itemLabel="Check Box" itemValue="5" />
+            <f:selectItem itemLabel="Fecha" itemValue="6" />
+            <f:selectItem itemLabel="Etiqueta" itemValue="7" />
+
+        </p:selectOneMenu>
+
+        <h:outputLabel for="label" rendered="#{not empty propertySectionView.selectedProp}" value="Etiqueta:" style="font-weight:bold" />
+        <p:inputText id="label" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.label}" />
+
+        <h:outputLabel for="validator" rendered="#{not empty propertySectionView.selectedProp}" value="Expresion:" />
+        <p:inputText id="validator" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.expressionValidator}" />
+
+        <h:outputLabel for="mask" rendered="#{not empty propertySectionView.selectedProp}" value="Mascara:" />
+        <p:inputText id="mask" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.mask}" placeholder="Solo para propiedades Input" />
+
+        <p:outputLabel for="parent" rendered="#{not empty propertySectionView.selectedProp}" value="Propiedad Padre:" />
+        <p:selectOneMenu id="parent" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.parent}" style="width:165px">
+            <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" />
+            <f:selectItems  value="#{propertySectionView.allProperty}" var="prop" itemLabel="#{prop.name}" itemValue="#{prop.propertyId}" />
+        </p:selectOneMenu>
+
+        <h:outputLabel for="visible" rendered="#{not empty propertySectionView.selectedProp}" value="Visible: " />
+        <p:selectBooleanButton id="visible" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.visible}" onLabel="Yes" offLabel="No" />
+
+        <h:outputLabel for="defaultValue" rendered="#{not empty propertySectionView.selectedProp}" value="Valor por Defecto:" />
+        <p:inputText id="defaultValue" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.defaultValue}" />
+
+        <h:outputLabel for="edit" rendered="#{not empty propertySectionView.selectedProp}" value="Editable: " />
+        <p:selectBooleanButton id="edit" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.editable}" onLabel="Yes" offLabel="No"/>
+
+        <h:outputLabel for="required" rendered="#{not empty propertySectionView.selectedProp}" value="Requerido: " />
+        <p:selectBooleanButton id="required" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.required}" onLabel="Yes" offLabel="No"/>
+    </h:panelGrid>
+
+</ui:composition>

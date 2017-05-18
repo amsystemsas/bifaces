@@ -1,0 +1,50 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:outputText value="#{textI18.property_TT}: "/>
+    <h:outputText rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.name}" style="font-weight: bold" />
+
+    <p:dataTable id="optionItemDT" rendered="#{not empty propertySectionView.selectedProp}"  var="prop" value="#{propertySectionView.allPropertyOptionItem}"
+                 selection="#{propertySectionView.optionItemSelected}" selectionMode="single" rowKey="#{prop.value}"
+                 scrollable="true" scrollHeight="150">
+
+        <p:ajax event="rowSelect" update="deleteOptioItemBtn" />
+
+        <f:facet name="header">
+            <p:inputText id="optItemDesc" value="#{propertySectionView.optionItemDescription}" placeholder="Description In"/>
+            <h:outputText value=" - " />
+            <p:inputText id="optItemValue" value="#{propertySectionView.optionItemValue}" placeholder="Value In" />
+
+            <p:commandButton value="#{textI18.save_TT}" style="margin-right:2px"
+                             icon="ui-icon-plusthick"
+                             process="@this :form:tabSetting:optionItemDT optItemDesc optItemValue"
+                             action="#{propertySectionView.addOptionItem}"
+                             update=":form:tabSetting:optionItemDT optItemDesc optItemValue">
+            </p:commandButton>
+
+        </f:facet>
+
+        <p:column headerText="#{textI18.description_TT}">
+            <h:outputText value="#{prop.description}" />
+        </p:column>
+
+        <p:column headerText="#{textI18.value_TT}">
+            <h:outputText value="#{prop.value}" />
+        </p:column>
+
+        <f:facet name="footer">
+            <p:commandButton id="deleteOptioItemBtn" icon="ui-icon-minusthick" value="#{textI18.delete_TT}"
+                             disabled="#{empty propertySectionView.optionItemSelected}"
+                             process="@this :form:tabSetting:optionItemDT"
+                             action="#{propertySectionView.deleteOptionItem}"
+                             update=":form:tabSetting:optionItemDT"/>
+
+        </f:facet>
+
+    </p:dataTable>
+
+</ui:composition>

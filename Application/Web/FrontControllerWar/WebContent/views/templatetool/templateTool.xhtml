@@ -1,0 +1,314 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/views/template/template.xhtml">
+
+    <ui:define name="title">
+        #{textI18.template_tool_TT}
+    </ui:define>
+
+    <ui:define name="description">
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="form" style="margin:auto;margin-top:2%;width:1024px;">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:layoutUnit position="center">
+                <p:growl id="winMessageId" showDetail="true" sticky="true"/>
+
+                <p:panelGrid>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="4">#{textI18.template_tool_TT}</p:column>
+                        </p:row>
+                        <p:row>
+                            <!--Header de Plantilla-->
+                            <p:column colspan="2">
+                                <p:menubar id="menuTemplate" style="width:300px; border-style: none">
+                                    <f:facet name="options">
+                                        <p:inputText id="templName" label="#{textI18.template_name_TT}"
+                                                     style="width: 195px;margin-right:2px;"
+                                                     placeholder="#{textI18.template_name_TT}"
+                                                     required="true"
+                                                     value="#{templateTreeView.templateName}">
+                                            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                                            <f:validateLength minimum="2"/>
+                                        </p:inputText>
+                                        <p:commandButton value="#{textI18.save_TT}" style="margin-right: 2px"
+                                                         icon="ui-icon-plusthick"
+                                                         process="@this templName templateTree"
+                                                         action="#{templateTreeView.addTemplate}"
+                                                         update="templateTree templName winMessageId"/>
+                                    </f:facet>
+                                </p:menubar>
+                            </p:column>
+
+                            <!--Header de Propiedad-->
+                            <p:column colspan="2">
+                                <p:menubar id="menuProperty" style="width: 286px; border-style: none">
+                                    <f:facet name="options">
+                                        <p:inputText id="propertyName" label="#{textI18.property_name_TT}"
+                                                     style="width:184px;margin-right:2px"
+                                                     placeholder="#{textI18.property_name_TT}"
+                                                     required="true"
+                                                     value="#{propertySectionView.propertyName}">
+                                            <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                                            <f:validateLength minimum="2"/>
+                                        </p:inputText>
+
+                                        <p:commandButton value="#{textI18.save_TT}" style="margin-right:2px"
+                                                         icon="ui-icon-plusthick"
+                                                         process="@this propertyName propertyDT"
+                                                         action="#{propertySectionView.addProperty}"
+                                                         update="propertyDT propertyName winMessageId">
+                                        </p:commandButton>
+
+                                    </f:facet>
+                                </p:menubar>
+                            </p:column>
+
+                        </p:row>
+                    </f:facet>
+
+                    <p:row>
+                        <!--Seccion del Arbol de Plantilla-->
+                        <p:column colspan="2" style="font-weight: bold;">
+                            <p:outputPanel style="width: 100%;height: 450px;overflow: auto;display: block">
+                                <p:tree id="templateTree" value="#{templateTreeView.root}" var="tree"
+                                        selectionMode="single"
+                                        selection="#{templateTreeView.selectedNode}">
+                                    <p:ajax event="select"
+                                            update=":form:disassociateBtn :form:deleteTemplBtn :form:cloneTemplBtn :form:propertyDT:associateBtn"/>
+
+                                    <p:treeNode>
+                                        <h:outputText value="#{tree.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="TEMP" expandedIcon="ui-icon-folder-open"
+                                                collapsedIcon="ui-icon-folder-collapsed">
+                                        <h:outputText value="#{tree.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="PROP" icon="ui-icon-video">
+                                        <h:outputText value="#{tree.name}"/>
+                                    </p:treeNode>
+                                </p:tree>
+                            </p:outputPanel>
+                        </p:column>
+
+
+                        <!--Seccion Tabla de Propiedades -->
+                        <pe:importEnum type="com.amsystem.bifaces.dynamictemplate.util.RenderingType"
+                                       var="RenderingType"/>
+                        <p:column colspan="2" rowspan="2">
+                            <p:dataTable id="propertyDT" var="prop" value="#{propertySectionView.properties}"
+                                         selection="#{propertySectionView.selectedProp}" selectionMode="single"
+                                         rowKey="#{prop.name}"
+                                         scrollable="true" scrollHeight="423">
+
+                                <p:ajax event="rowSelect" update="associateBtn editPropBtn clonePropBtn deletePropBtn" />
+
+                                <p:column headerText="#{textI18.property_TT}">
+                                    <h:outputText value="#{prop.name}"/>
+                                </p:column>
+                                <p:column headerText="#{textI18.type_TT}">
+                                    <h:outputText value="#{prop.renderingType eq RenderingType.INPUT_TEXT.getValue() ? textI18.input_text_TT  :
+                                                               prop.renderingType eq RenderingType.TEXTAREA.getValue() ? textI18.text_area_TT    :
+                                                               prop.renderingType eq RenderingType.OPTION_LIST.getValue() ? textI18.list_TT :
+                                                               prop.renderingType eq RenderingType.RADIO_BUTTON.getValue() ? textI18.radio_TT :
+                                                               prop.renderingType eq RenderingType.CHECKBOX_LIST.getValue() ? textI18.check_list_TT :
+                                                               prop.renderingType eq RenderingType.CHECKBOX.getValue() ? textI18.check_TT :
+                                                               prop.renderingType eq RenderingType.DATE.getValue() ? textI18.date_TT : textI18.label_TT}"/>
+                                </p:column>
+
+                                <f:facet name="footer">
+
+                                    <p:commandButton id="associateBtn" value="#{textI18.associate_TT}" style="margin-bottom: 10px"
+                                                     icon="fa fa-chain"
+                                                     disabled="#{empty propertySectionView.selectedProp or empty templateTreeView.selectedNode or templateTreeView.selectedNode.type ne 'TEMP'}"
+                                                     process="@this :form:templateTree propertyDT :form:winMessageId"
+                                                     action="#{templateTreeView.associatePropertyTemplate}"
+                                                     update=":form:templateTree :form:winMessageId"/>
+
+                                    <p:spacer styleClass="vertical-separator" style="width: 2px; height: 22px"/>
+
+                                    <p:commandButton id="editPropBtn" process="propertyDT" value="#{textI18.edit_TT}"
+                                                     icon="fa fa-edit"
+                                                     disabled="#{empty propertySectionView.selectedProp}"
+                                                     update=":form:tabSetting"
+                                                     onclick="PF('widSettingProperty').show();"/>
+
+                                    <p:commandButton id="clonePropBtn" value="#{textI18.clone_TT}"
+                                                     icon="fa fa-code-fork"
+                                                     disabled="#{empty propertySectionView.selectedProp}"
+                                                     process="@this propertyDT"
+                                                     update="propertyDT"
+                                                     onclick="PF('clonePropertyDlg').show();"/>
+
+                                    <p:commandButton id="deletePropBtn" value="#{textI18.delete_TT}" icon="ui-icon-minusthick"
+                                                     disabled="#{empty propertySectionView.selectedProp}"
+                                                     process="@this propertyDT"
+                                                     update="propertyDT :form:winMessageId"
+                                                     action="#{propertySectionView.deleteProperty}"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:column>
+
+                    </p:row>
+
+                    <!--Seccion Botones de Arbol de Plantillas -->
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+
+                            <p:outputPanel style="">
+
+
+                                <p:commandButton id="deleteTemplBtn" value="#{textI18.delete_TT}"
+                                                 disabled="#{templateTreeView.selectedNode.type ne 'TEMP'}"
+                                                 action="#{templateTreeView.deleteTemplate()}"
+                                                 icon="ui-icon-minusthick"
+                                                 process="@this"/>
+
+                                <p:commandButton id="cloneTemplBtn" value="#{textI18.clone_TT}"
+                                                 icon="fa fa-code-fork"
+                                                 disabled="#{templateTreeView.selectedNode.type ne 'TEMP'}"
+                                                 update=""/>
+
+                                <p:spacer styleClass="vertical-separator" style="width: 2px; height: 22px"/>
+
+                                <p:commandButton id="disassociateBtn" value="#{textI18.disassociate_TT}"
+                                                 icon="fa fa-chain-broken"
+                                                 disabled="#{templateTreeView.selectedNode.type ne 'PROP'}"
+                                                 action="#{templateTreeView.disassociatePropertyTemplate()}"
+                                                 process="@this templateTree winMessageId"
+                                                 update="templateTree winMessageId"/>
+
+                                <!--<p:commandButton value="#{textI18.life_cycle_TT}" icon="ui-icon-plusthick"
+                                                 onclick="PF('dlgLifeCycle').show();"/> -->
+                            </p:outputPanel>
+
+                        </p:column>
+
+                    </p:row>
+                </p:panelGrid>
+
+
+            </p:layoutUnit>
+
+            <!-- Ventana detalles de la propiedad -->
+            <p:dialog id="widSettPropId" header="#{textI18.property_detail_TT}" widgetVar="widSettingProperty"
+                      modal="true"
+                      showEffect="fade" hideEffect="fade" resizable="false" style="margin-top:1%">
+
+                <p:tabView id="tabSetting" scrollable="true" cache="false"
+                           style="margin:5px 0px 2px 0px;width:700px;">
+                    <p:tab title="#{textI18.viewer_TT}">
+                        <ui:include src="viwerProperty.xhtml"/>
+                    </p:tab>
+                    <p:tab title="#{textI18.list_value_TT}">
+                        <ui:include src="valueListProperty.xhtml"/>
+                    </p:tab>
+                </p:tabView>
+
+                <p:outputPanel style="width: 100%;overflow: auto;display: block">
+                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
+                                     process="@this propertyDT winMessageId widSettPropId"
+                                     action="#{propertySectionView.updateProperty()}"
+                                     update="propertyDT" icon="ui-icon-plusthick"
+                                    oncomplete="PF('widSettingProperty').hide();"/>
+                    <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
+                                     onclick="PF('widSettingProperty').hide();" type="button"/>
+                </p:outputPanel>
+
+            </p:dialog>
+
+            <!-- Ventana de confirmacion para eliminar plantillas con propiedades asociadas-->
+            <p:dialog header="#{textI18.confirmation_header_GRL}" widgetVar="confirmDeleteTemplDlg" showEffect="fade" hideEffect="fade" modal="true">
+                <h:outputText value="#{textI18.template_property_associated_TT}" />
+
+                <p:outputPanel style="width: 100%;overflow: auto;display: block">
+                    <p:commandButton value="#{textI18.option_yes_GRL}" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"
+                                     process="@this templateTree winMessageId"
+                                     update="templateTree winMessageId"
+                                     oncomplete="PF('confirmDeleteTemplDlg').hide();"
+                                     action="#{templateTreeView.confirmationDeleteTemplate}" />
+                    <p:commandButton value="#{textI18.option_not_GRL}" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"
+                                     onclick="PF('confirmDeleteTemplDlg').hide();"/>
+                </p:outputPanel>
+
+            </p:dialog>
+
+            <!-- Ventana clonar propiedad/Palntilla-->
+            <p:dialog id="clonePropertyDlgId" header="#{textI18.cloning_propertyTemplate_title_TT}" widgetVar="clonePropertyDlg" showEffect="fade" hideEffect="fade" modal="true" resizable="false">
+
+
+                <h:panelGrid style=" border: 3px double cornflowerblue;  border-radius: 5px;  margin: 5px 0px 0px 0px;" columns="2" cellpadding="5">
+                    <h:outputLabel for="propertyCloneId" value="#{textI18.propertyTemplate_name_TT}:"/>
+
+                    <p:inputText id="propertyCloneId" label="#{textI18.propertyTemplate_name_TT}"
+                                 style="width:184px;margin-right:2px"
+                                 required="true"
+                                 value="#{propertySectionView.clonePropertyTemplateName}">
+                        <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                        <f:validateLength minimum="2"/>
+                    </p:inputText>
+                </h:panelGrid>
+
+                <p:outputPanel style="width: 100%;overflow: auto;display: block">
+
+
+                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
+                                     icon="ui-icon-plusthick"
+                                     process="@this propertyCloneId propertyDT winMessageId"
+                                     update="propertyCloneId propertyDT winMessageId"
+                                     oncomplete="PF('clonePropertyDlg').hide();"
+                                     action="#{propertySectionView.cloneProperty}"/>
+                    <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
+                                     onclick="PF('clonePropertyDlg').hide();" type="button"/>
+                </p:outputPanel>
+
+            </p:dialog>
+
+
+
+        </h:form>
+        <!--
+                <h:form id="formLC">
+                    <p:dialog id="dlgLifeCycle" header="#{textI18.setting_life_cycle_TT}" widgetVar="dlgLifeCycle" modal="false"
+                              showEffect="fade" hideEffect="fade" resizable="false" style="width: 700px; height: 650px">
+                        <p:outputPanel style="width: 800px; height: 500px">
+                            <ui:include src="viewerLifeCycle.xhtml"/>
+                        </p:outputPanel>
+
+                        <p:outputPanel style="width: 100%;overflow: auto;display: block">
+                            <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"/>
+                            <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
+                                             onclick="PF('dlgLifeCycle').hide();" type="button"/>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+        -->
+        <hr/>
+
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('dlg').jq.effect("shake", {times: 5}, 100);
+                }
+                else {
+                    PF('dlg').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>
+    </ui:define>
+
+    <!-- <ui:define name="code">
+
+     </ui:define>-->
+</ui:composition>

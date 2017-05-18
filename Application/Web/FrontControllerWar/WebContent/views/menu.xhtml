@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+        >
+
+<h:head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
+    <h:outputStylesheet library="css" name="bootstrap.css"/>
+    <h:outputStylesheet library="css" name="AdminLTE.min.css"/>
+    <h:outputStylesheet library="css" name="_all-skins.min.css"/>
+    <h:outputStylesheet library="css" name="mystyle.css"/>
+    <h:outputScript library="js" name="jquery-2.2.3.min.js"/>
+    <h:outputScript library="js" name="jquery-ui.min.js"/>
+    <h:outputScript library="js" name="bootstrap.min.js"/>
+    <h:outputScript library="js" name="app.min.js"/>
+
+</h:head>
+
+<h:body styleClass="hold-transition skin-blue sidebar-mini">
+
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a class="logo">
+                <span class="logo-lg"><b>Nombre Empresa</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <h:form id="formHead">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                    <div class="navbar-custom-menu">
+
+                        <ul class="nav navbar-nav">
+                            <!-- Messages: style can be found in dropdown.less-->
+                            <li>
+
+                                <div class="pull-left image">
+                                    <h:graphicImage library="images" name="multiple-language.jpg"
+                                                    styleClass="img-circle"
+                                                    style="max-width: 30px; margin-right: 5px; margin-top: 9px;"/>
+                                </div>
+                            </li>
+                            <li>
+                                <h:selectOneMenu id="locale" value="#{language.selectedLocale}"
+                                                 style="margin-top: 14px; width:95px">
+                                    <f:selectItems value="#{language.localeInMap}"/>
+                                    <p:ajax event="valueChange" listener="#{language.onLanguageChange}"/>
+                                </h:selectOneMenu>
+                            </li>
+
+                            <!-- Notifications: style can be found in dropdown.less -->
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bell-o"/>
+                                    <span class="label label-warning">10</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="footer"><a href="#">View all</a></li>
+                                </ul>
+                            </li>
+                            <!-- Tasks: style can be found in dropdown.less -->
+                            <li class="dropdown tasks-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-flag-o"/>
+                                    <span class="label label-danger">9</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 9 tasks</li>
+
+                                    <li class="footer">
+                                        <a href="#">View all tasks</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu" style="width: 190px">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>-->
+                                    <h:graphicImage library="images" name="avatar5.png" styleClass="user-image"/>
+                                    <span class="hidden-xs">${loggedinuser}</span><br/>
+
+                                    <div class="clockApp">
+                                        <p:clock pattern="HH:mm:ss dd/MM/yyyy" mode="server"/>
+                                    </div>
+
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <!--<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />-->
+                                        <h:graphicImage library="images" name="avatar5.png" styleClass="user-image"/>
+
+                                        <p>
+                                            ${loggedinuser} - Web Developer
+                                            <small>Member since Oct. 2016</small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-right">
+                                            <a href="${request.contextPath}/logout"
+                                               class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </h:form>
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <h:graphicImage library="images" name="avatar5.png" styleClass="img-circle"/>
+                    </div>
+                    <div class="pull-left info">
+                        <p>${loggedinuser}</p>
+                        <a><i class="fa fa-circle text-success"/> Administrador</a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="header">MAIN NAVIGATION</li>
+
+                    <!--
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-pie-chart"/>
+                            <span>Charts</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"/>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"/> ChartJS</a></li>
+                            <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"/> Morris</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-laptop"/>
+                            <span>Configuracion</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"/>
+                            </span>
+                        </a>
+                        <sec:authorize access="hasRole('ADMIN')">
+                            <ul class="treeview-menu">
+
+                                <li><a href="${request.contextPath}/propertyTemplateTool" target="_blank"><i
+                                        class="fa fa-circle-o"/> Herrramienta de plantillas</a></li>
+                                <li><a href="${request.contextPath}/productTool" target="_blank"><i
+                                        class="fa fa-circle-o"/> Herrramienta de producto</a></li>
+                                <li><a href="${request.contextPath}/testTemplateGenerator" target="_blank"><i
+                                        class="fa fa-circle-o"/> Generar plantila Test</a></li>
+                                <li><a href="${request.contextPath}/testAdminFaces" target="_blank"><i
+                                        class="fa fa-circle-o"/> Test AdminFaces</a></li>
+                            </ul>
+                        </sec:authorize>
+                    </li>
+                    <!--
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-table"/> <span>Tables</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"/>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"/> Simple tables</a></li>
+                            <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"/> Data tables</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-share"/> <span>Multilevel</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"/>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"/> Level One</a></li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"/> Level One
+                                    <span class="pull-right-container">
+                                      <i class="fa fa-angle-left pull-right"/>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="#"><i class="fa fa-circle-o"/> Level Two</a></li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-circle-o"/> Level Two
+                                            <span class="pull-right-container">
+                                              <i class="fa fa-angle-left pull-right"/>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="#"><i class="fa fa-circle-o"/> Level Three</a></li>
+                                            <li><a href="#"><i class="fa fa-circle-o"/> Level Three</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="fa fa-circle-o"/> Level One</a></li>
+                        </ul>
+                    </li>
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <li class="treeview">
+                            <a href="${request.contextPath}/userTool" target="_blank">
+                                <i class="fa fa-users"/> <span>Cuentas y protección de </span><br/>
+                                <span>usuarios</span>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <li><a href="documentation/index.html"><i class="fa fa-book"/> <span>Documentation</span></a></li>
+
+                    <li class="header">LABELS</li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1> Dashboard
+                    <small>Control panel
+                        <h:outputText value="Jaime : #{msg['app.startup.successful']}"/>
+                    </small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"/> Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>150</h3>
+
+                                <p>New Orders</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"/>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"/></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                                <p>Bounce Rate</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"/>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"/></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>44</h3>
+
+                                <p>User Registrations</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"/>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"/></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>65</h3>
+
+                                <p>Unique Visitors</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"/>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"/></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-7 connectedSortable">
+                        <!-- TO DO List -->
+                        <!-- /.box -->
+                    </section>
+                    <!-- /.Left col -->
+                    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                    <section class="col-lg-5 connectedSortable">
+                        <!-- Map box -->
+                        <div class="box box-solid bg-light-blue-gradient">
+
+                        </div>
+                        <!-- /.box -->
+                        <!-- solid sales graph -->
+                        <div class="box box-solid bg-teal-gradient">
+
+                        </div>
+                        <!-- /.box -->
+                        <!-- Calendar -->
+                        <div class="box box-solid bg-green-gradient">
+
+                        </div>
+                        <!-- /.box -->
+
+                    </section>
+                    <!-- right col -->
+                </div>
+                <!-- /.row (main row) -->
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &#169; 2016 <a href="#">Mi Empresa VENECO</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+
+    <h:form>
+
+    </h:form>
+
+</h:body>
+
+</html>
