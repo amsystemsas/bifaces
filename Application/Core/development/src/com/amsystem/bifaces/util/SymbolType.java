@@ -16,6 +16,7 @@ public enum SymbolType {
     PIPE("|"),
     AMPERSAND_SYMBOL("&"),
     PLUS("+"),
+    MINUS("-"),
     BACKSLASH("\\"),
     AT_SING("@");
 

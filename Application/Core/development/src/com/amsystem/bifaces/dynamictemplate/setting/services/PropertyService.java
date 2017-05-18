@@ -14,7 +14,6 @@ import java.util.List;
 public interface PropertyService {
     /**
      * Agrega una nueva propedad al negocio
-     *
      * @param propertyName nombre de la nueva propiedad
      * @return <tt>true</tt> Si la propiedad es agregada con exito. <tt>false</tt> Si ocurre algun error.
      */
@@ -51,8 +50,9 @@ public interface PropertyService {
     List<IFProperty> findAllPropertyByIds(List idsProperty);
 
 
-
     boolean isAssociate(IFProperty selectedProp);
+
+    boolean cloneProperty(String propertyCloneName, IFProperty selectedProp);
 
 
 

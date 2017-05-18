@@ -5,8 +5,9 @@ import com.amsystem.bifaces.dynamictemplate.setting.model.PropertyTemplate;
 import java.util.List;
 
 /**
- * Title: IFDynamicObjectPropDao.java
- * @author jaguilar (JAR)
+ * Title: PropertyTemplateDao.java
+ *
+ * @author Jaime Aguilar (JAR)
  * File Creation on 24/04/2016
  */
 public interface PropertyTemplateDao {
@@ -44,6 +45,7 @@ public interface PropertyTemplateDao {
     /**
      * Busca una asociacion dado el identificador de Propidad y Plantilla
      * TODO: Metodo de poca utilidad hasta ahora
+     *
      * @param idProperty
      * @param idDynamicObject
      * @return

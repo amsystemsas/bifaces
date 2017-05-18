@@ -84,7 +84,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public List<Template> findAllTemplateByIdList(List templateId) {
-        return null;
+        return templateDao.loadTemplateListByIdList(templateId);
     }
 
     @Override

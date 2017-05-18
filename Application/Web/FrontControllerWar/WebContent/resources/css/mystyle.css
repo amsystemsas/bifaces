@@ -5,7 +5,7 @@ and open the template in the editor.
 */
 /* 
     Created on : 15/11/2015, 04:48:32 PM
-    Author     : Naldo
+    Author     : Jaime Aguilar (JAR)
 */
 .headerTemplate{ 
     height:50px; 
@@ -39,7 +39,17 @@ and open the template in the editor.
 body {
     background-image: url("#{resource['images/boxed-bg.jpg']}");
 }
- 
+
+
+.ui-growl{
+    z-index: 2000;
+    margin: 30px -20px 0px 0px;
+}
+
+.vertical-separator{
+    border: 1px solid #77d5f7;
+    margin: -2px 3px 0px 2px;
+}
 
  
 

@@ -132,13 +132,13 @@ public class TemplateDaoImpl extends AbstractDao<Integer, Template> implements T
     }
 
     @Override
-    public List<Template> loadPropertyListByIdList(List templateId) {
+    public List<Template> loadTemplateListByIdList(List templateId) {
         List<Template> templateList;
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("ids", templateId);
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(getDataSource());
-        String sql = "SELECT * FROM PROPERTY WHERE IDPROPERTY IN (:ids)";
+        String sql = "SELECT * FROM TEMPLATEREPOSITORY WHERE IDTR IN (:ids)";
         templateList = template.query(sql, parameters, new BeanPropertyRowMapper(Template.class));
 
         return templateList;

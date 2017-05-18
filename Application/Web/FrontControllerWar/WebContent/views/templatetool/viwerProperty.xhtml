@@ -57,6 +57,7 @@
 
         <h:outputLabel for="required" rendered="#{not empty propertySectionView.selectedProp}"
                        value="#{textI18.required_TT}: "/>
+
         <p:selectBooleanButton id="required" rendered="#{not empty propertySectionView.selectedProp}" value="#{propertySectionView.selectedProp.required}" onLabel="Yes" offLabel="No"/>
     </h:panelGrid>
 

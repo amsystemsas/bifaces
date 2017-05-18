@@ -31,13 +31,16 @@ public class PropertySectionView implements Serializable{
     //Nombre de la nueva propiedad a registrar
     private String propertyName;
 
+    //Nombre de la nueva propiedad a registrar
+    private String clonePropertyTemplateName;
+
     //Descripcion de la opcion para una propiedad
     private String optionItemDescription;
 
     //Valor de la opcion para una propiedad
     private String optionItemValue;
 
-    private PropertyOptionItem optionItem;
+    private PropertyOptionItem optionItemSelected;
 
     //Lista de propiedades
     private List<IFProperty> properties;
@@ -72,6 +75,7 @@ public class PropertySectionView implements Serializable{
     public void deleteProperty(){
         log.debug("Eliminando Propiedad : " + selectedProp.getName());
         service.deleteProperty(selectedProp);
+        init();
     }
 
 
@@ -85,35 +89,45 @@ public class PropertySectionView implements Serializable{
     }
 
     /**
+     * Actualiza la informacion de una propiedad seleccionada
+     */
+    public void cloneProperty() {
+        log.debug(" ************** Clonando Propiedad *************: " + selectedProp.getName());
+        service.cloneProperty(getClonePropertyTemplateName(), selectedProp);
+        setClonePropertyTemplateName(null);
+        init();
+
+    }
+
+    /**
      * Agrega una nueva opciona a una propiedad seleccionada
      */
     public void addOptionItem() {
         PropertyOptionItem item = new PropertyOptionItem(selectedProp.getPropertyId(), Float.valueOf(getOptionItemValue()), getOptionItemDescription(), null);
         log.debug("Agregando Opcion: " + item);
-        service.addOptionItem(item);
+        service.addOptionItem(selectedProp, item);
         setOptionItemDescription(null);
         setOptionItemValue(null);
 
     }
 
+    /**
+     * Elimina un <tt>OptionItem</tt> de una propiedad seleccionada
+     */
+    public void deleteOptionItem() {
+        log.debug("Eliminando OptionItem: " + optionItemSelected);
+        service.deleteOptionItem(selectedProp, optionItemSelected);
+        setOptionItemSelected(null);
 
-
-
-
-
+    }
 
     /**
      * Busca las <i>Opciones</i> de una propiedad seleccionada de tipo <tt>lista</tt>
-     *
      * @return <tt>Lista</tt> de opciones de la propiedad
      */
     public List<PropertyOptionItem> getAllPropertyOptionItem(){
-
         return (selectedProp != null) ? service.getAllPropertyOptionItem(selectedProp.getPropertyId()) : null;
     }
-
-
-
 
 
 
@@ -123,6 +137,14 @@ public class PropertySectionView implements Serializable{
 
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
+    }
+
+    public String getClonePropertyTemplateName() {
+        return clonePropertyTemplateName;
+    }
+
+    public void setClonePropertyTemplateName(String clonePropertyTemplateName) {
+        this.clonePropertyTemplateName = clonePropertyTemplateName;
     }
 
     public String getOptionItemDescription() {
@@ -165,11 +187,11 @@ public class PropertySectionView implements Serializable{
         this.service = service;
     }
 
-    public PropertyOptionItem getOptionItem() {
-        return optionItem;
+    public PropertyOptionItem getOptionItemSelected() {
+        return optionItemSelected;
     }
 
-    public void setOptionItem(PropertyOptionItem optionItem) {
-        this.optionItem = optionItem;
+    public void setOptionItemSelected(PropertyOptionItem optionItemSelected) {
+        this.optionItemSelected = optionItemSelected;
     }
 }

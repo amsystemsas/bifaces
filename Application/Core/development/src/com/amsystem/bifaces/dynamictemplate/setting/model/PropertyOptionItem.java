@@ -12,7 +12,7 @@ import java.util.Set;
  *         File Creation on 27/07/2016.
  */
 public class PropertyOptionItem {
-    private Integer propertyItemId;
+    private Integer poiId;
     private Integer propertyId;
     private float value;
     private String description;
@@ -26,20 +26,20 @@ public class PropertyOptionItem {
         this.itemLabels = itemLabels;
     }
 
-    public PropertyOptionItem(Integer propertyItemId, Integer propertyId, float value, String description, Set<PropertyOptionItemLabel> itemLabels) {
-        this.propertyItemId = propertyItemId;
+    public PropertyOptionItem(Integer poiId, Integer propertyId, float value, String description, Set<PropertyOptionItemLabel> itemLabels) {
+        this.poiId = poiId;
         this.propertyId = propertyId;
         this.value = value;
         this.description = description;
         this.itemLabels = itemLabels;
     }
 
-    public Integer getPropertyItemId() {
-        return propertyItemId;
+    public Integer getPoiId() {
+        return poiId;
     }
 
-    public void setPropertyItemId(Integer propertyItemId) {
-        this.propertyItemId = propertyItemId;
+    public void setPoiId(Integer poiId) {
+        this.poiId = poiId;
     }
 
     public Integer getPropertyId() {

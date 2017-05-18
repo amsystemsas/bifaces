@@ -58,8 +58,6 @@ public class User implements Serializable{
     @Column(name="STATUS", nullable=false)
     private int status;
 
-
-
     @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",

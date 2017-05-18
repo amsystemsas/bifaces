@@ -23,6 +23,13 @@ public class PropertyOptionItemLabel {
         this.locale = locale;
     }
 
+    public PropertyOptionItemLabel(Integer poiId, Integer propertyId, String description, String locale) {
+        this.poiId = poiId;
+        this.propertyId = propertyId;
+        this.description = description;
+        this.locale = locale;
+    }
+
     public Integer getPoilId() {
         return poilId;
     }

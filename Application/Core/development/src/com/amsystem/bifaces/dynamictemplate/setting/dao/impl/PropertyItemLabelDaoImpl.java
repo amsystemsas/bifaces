@@ -5,12 +5,16 @@ import com.amsystem.bifaces.dynamictemplate.setting.model.PropertyOptionItemLabe
 import com.amsystem.bifaces.util.AbstractDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Title: PropertyItemLabelDaoImpl.java <br>
@@ -38,6 +42,39 @@ public class PropertyItemLabelDaoImpl extends AbstractDao<Integer, Integer> impl
 
         int rowAffected = jdbcTemplate.update(sql.toString(), propertyOptionItemLabel.getPoiId(), propertyOptionItemLabel.getPropertyId(),
                 propertyOptionItemLabel.getDescription(), propertyOptionItemLabel.getLocale());
+
+        return rowAffected > 0;
+    }
+
+    @Override
+    public boolean saveBatch(final Set<PropertyOptionItemLabel> itemLabelsList){
+        jdbcTemplate = new JdbcTemplate(getDataSource());
+        StringBuilder sql = new StringBuilder();
+        sql.append("INSERT INTO PROPERTYOPTIONITEMLABEL ")
+                .append("(IDPOI, IDPROPERTY, VALUE, LOCALE) ")
+                .append(" VALUES (?,?,?,?)");
+
+        log.debug("sql: " + sql);
+
+        int rowAffected = jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i)
+                    throws SQLException {
+
+                PropertyOptionItemLabel optionItemLabel = (PropertyOptionItemLabel) itemLabelsList.toArray()[i];
+                ps.setInt(1, optionItemLabel.getPoiId());
+                ps.setInt(2, optionItemLabel.getPropertyId());
+                ps.setString(3, optionItemLabel.getDescription());
+                ps.setString(4, optionItemLabel.getLocale());
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return itemLabelsList.size();
+            }
+        }).length;
 
         return rowAffected > 0;
     }

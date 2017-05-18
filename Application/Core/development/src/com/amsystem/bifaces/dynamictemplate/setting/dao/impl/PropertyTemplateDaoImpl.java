@@ -84,15 +84,16 @@ public class PropertyTemplateDaoImpl extends AbstractDao<Integer, Integer> imple
     @Override
     public boolean isPropertyAssociatedToTemplate(Integer idProperty) {
         jdbcTemplate = new JdbcTemplate(getDataSource());
-        String sql = "SELECT COUNT (IDTR) FROM PROPERTYTEMPLATE WHERE IDPROPERTY = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{idProperty}, Integer.class)>0;
+        String sql = "SELECT COUNT(IDTR) FROM PROPERTYTEMPLATE WHERE IDPROPERTY = ?";
+        Integer rowCount = jdbcTemplate.queryForObject(sql, new Object[]{idProperty}, Integer.class);
+        return rowCount >0;
 
     }
 
     @Override
     public boolean hasTemplateProperties(Integer templateId) {
         jdbcTemplate = new JdbcTemplate(getDataSource());
-        String sql = "SELECT COUNT (IDPROPERTY) FROM PROPERTYTEMPLATE WHERE IDTR = ?";
+        String sql = "SELECT COUNT(IDPROPERTY) FROM PROPERTYTEMPLATE WHERE IDTR = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{templateId}, Integer.class)>0;
 
     }

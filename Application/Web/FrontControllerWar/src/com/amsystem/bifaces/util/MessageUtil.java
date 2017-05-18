@@ -58,9 +58,13 @@ public class MessageUtil {
 
         RequestContext.getCurrentInstance().showMessageInDialog(message);
 
-
     }
 
+    /**
+     *
+     * @param componentUpdateName
+     * @param componentExecuteName
+     */
     public static void updateExecute(String componentUpdateName, String componentExecuteName) {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         if(!StringUtil.isEmptyOrNullValue(componentUpdateName))  requestContext.update(componentUpdateName);

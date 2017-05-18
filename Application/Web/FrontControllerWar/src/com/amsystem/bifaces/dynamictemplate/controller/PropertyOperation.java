@@ -10,6 +10,7 @@ import com.amsystem.bifaces.dynamictemplate.setting.services.PropertyService;
 import com.amsystem.bifaces.dynamictemplate.setting.services.PropertyTemplateService;
 import com.amsystem.bifaces.dynamictemplate.setting.services.TemplateService;
 import com.amsystem.bifaces.util.MessageUtil;
+import com.amsystem.bifaces.util.SymbolType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,37 +40,14 @@ public class PropertyOperation implements Serializable{
     private PropertyService propertyService;
 
     @Autowired
-    private PropertyTemplateService propertyTemplateService;
+    private TemplateService templateService;
 
     @Autowired
-    private TemplateService templateService;
+    private PropertyTemplateService propertyTemplateService;
 
     @Autowired
     private ResourceBundle rb;
 
-    public PropertyService getPropertyService() {
-        return propertyService;
-    }
-
-    public void setPropertyService(PropertyService propertyService) {
-        this.propertyService = propertyService;
-    }
-
-    public PropertyTemplateService getPropertyTemplateService() {
-        return propertyTemplateService;
-    }
-
-    public void setPropertyTemplateService(PropertyTemplateService propertyTemplateService) {
-        this.propertyTemplateService = propertyTemplateService;
-    }
-
-    public TemplateService getTemplateService() {
-        return templateService;
-    }
-
-    public void setTemplateService(TemplateService templateService) {
-        this.templateService = templateService;
-    }
 
     /**
      * Agrega una nueva propiedad en el sistema
@@ -95,6 +73,14 @@ public class PropertyOperation implements Serializable{
     }
 
     /**
+     * Actualiza en el sistema los valores de la propiedad seleccionada
+     * @param selectedProp propiedad seleccionada en el sistema
+     */
+    public void cloneProperty(String propertyCloneName, IFProperty selectedProp) {
+        propertyService.cloneProperty(propertyCloneName, selectedProp);
+    }
+
+    /**
      * Elimina la propiedad seleccionda en el sistema. Si la propiedad se encuentra asociada a una plantilla arroja un
      * mensaja indicando que no se puede eliminar. Primero debe ser desvinculada de la plantilla
      * @param selectedProperty
@@ -105,13 +91,28 @@ public class PropertyOperation implements Serializable{
             List<Integer> templateListByProperty = propertyTemplateService.findTemplateListByProperty(selectedProperty.getPropertyId());
             List<Template> allTemplateByIdList = templateService.findAllTemplateByIdList(templateListByProperty);
             log.error("No se puede eliminar la propiedad porque se sencuentra asociada a las siguientes plantillas: ");
+            StringBuilder templateName = new StringBuilder();
+
             for(Template template : allTemplateByIdList){
+
+                if(templateName.length() > 0) {
+                    templateName.append(SymbolType.SPACE.getValue()).append(SymbolType.MINUS.getValue()).append(SymbolType.SPACE.getValue());
+                }
+                templateName.append(template.getName());
                 log.error("Plantilla: " + template.getName());
             }
+
+            String associatedMsjTt = rb.getString("propertyTemplateAssociated_msj_TT").concat(SymbolType.SPACE.getValue()).concat(templateName.toString());
+            MessageUtil.showMessage(NotificationType.ERROR, rb.getString(NotificationType.ERROR.getLabel().concat("_GRL")), associatedMsjTt) ;
+        }else{
+            MessageUtil.showMessage(NotificationType.INFO, rb.getString(NotificationType.INFO.getLabel().concat("_GRL")), rb.getString("property_deleted_success_TT")) ;
         }
     }
-    
 
+    /**
+     * Busca todas las propiedades registradas en el sistema
+     * @return <tt>Lis</tt> de propiedades. Si no existe propiedades registradas, la <tt>List</tt> es vacia
+     */
     public List<IFProperty> propertyList(){
         log.debug("Cargando Propiedades..");
         log.debug("Lenguaje: " + UserInfo.getLocaleUser());
@@ -119,25 +120,69 @@ public class PropertyOperation implements Serializable{
         log.debug("Bundle = " + rb.getString("save_TT"));
         List<IFProperty> propList = propertyService.findAllProperty();
 
-        /*
-        for (Property prop : propertyService.loadAllProperty()) {
-            propList.add(new PropertyVO(prop.getPropertyId(),prop.getName(), prop.getLabel(), prop.getType(),
-                    prop.getRenderingType(), prop.getExpressionValidator(), prop.getFormula(), prop.getDefaultValue(),
-                    prop.isVisible(), prop.isEditable(), prop.isRequired(), prop.getParent(), prop.getMask()));
-
-        }
-        */
         return propList;
     }
 
+    /**
+     * Agrega un <tt>OptionItem</tt> a una propiedad de tipo <tt>List</tt>
+     * @param selectedProperty propiedad seleccionada para agregar el nuevo <tt>OptionItem</tt>
+     * @param optionItem nuevo <tt>OptionItem</tt>
+     */
+    public void addOptionItem(IFProperty selectedProperty, PropertyOptionItem optionItem) {
+        if(propertyService.addOptionItemProperty(optionItem)){
+            selectedProperty.setPropertyOptionItems(propertyService.findPropertyOptionItem(selectedProperty.getPropertyId()));
+        }else {
+            //Mostrar Mensaje
+        }
 
-    public void addOptionItem(PropertyOptionItem optionItem) {
-        propertyService.addOptionItemProperty(optionItem);
     }
 
+    /**
+     *
+     * @param selectedProperty
+     * @param optionItem
+     */
+    public void deleteOptionItem(IFProperty selectedProperty, PropertyOptionItem optionItem) {
+        if(propertyService.deleteOptionItemProperty(optionItem)){
+            selectedProperty.setPropertyOptionItems(propertyService.findPropertyOptionItem(selectedProperty.getPropertyId()));
+        }else {
+            //Mostrar Mensaje
+        }
+
+    }
+
+    /**
+     * Busca todos los <tt>OptionItem</tt> de una propiedad
+     * @param propertyId identificador de la propiedad a buscar los <tt>OptionItem</tt>
+     * @return <tt>Lis</tt> de <tt>OptionItem</tt>. Si no existe <tt>OptionItem</tt> vinculados a la propiedad,
+     *         la <tt>List</tt> es vacia
+     */
     public List<PropertyOptionItem> getAllPropertyOptionItem(Integer propertyId) {
         return propertyService.findPropertyOptionItem(propertyId);
     }
 
+    public PropertyService getPropertyService() {
+        return propertyService;
+    }
+
+    public void setPropertyService(PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
+
+    public PropertyTemplateService getPropertyTemplateService() {
+        return propertyTemplateService;
+    }
+
+    public void setPropertyTemplateService(PropertyTemplateService propertyTemplateService) {
+        this.propertyTemplateService = propertyTemplateService;
+    }
+
+    public TemplateService getTemplateService() {
+        return templateService;
+    }
+
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
+    }
 
 }
