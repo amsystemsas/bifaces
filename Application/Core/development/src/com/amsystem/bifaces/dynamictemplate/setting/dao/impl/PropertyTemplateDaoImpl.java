@@ -5,9 +5,13 @@ import com.amsystem.bifaces.dynamictemplate.setting.dao.PropertyTemplateDao;
 import com.amsystem.bifaces.dynamictemplate.setting.model.PropertyTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -52,6 +56,40 @@ public class PropertyTemplateDaoImpl extends AbstractDao<Integer, Integer> imple
         }
 
         return rowAffected>0;
+    }
+
+    @Override
+    public boolean saveBatch(final List<PropertyTemplate> propertyOptionItems) {
+        jdbcTemplate = new JdbcTemplate(getDataSource());
+        StringBuilder sql = new StringBuilder();
+        sql.append("INSERT INTO PROPERTYTEMPLATE ")
+                .append("(IDPROPERTY, IDTR, OPERATION_DATE) ")
+                .append(" VALUES (?,?,?)");
+
+        log.debug("sql: " + sql);
+
+        int rowAffected = jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i)
+                    throws SQLException {
+
+                PropertyTemplate propertyTemplate = propertyOptionItems.get(i);
+                ps.setInt(1, propertyTemplate.getPropertyId());
+                ps.setInt(2, propertyTemplate.getTemplateId());
+                ps.setDate(3, (new Date(propertyTemplate.getOperationDate().getTime())));
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return propertyOptionItems.size();
+            }
+        }).length;
+
+        log.debug("Filas almacenadas: " + rowAffected);
+        return rowAffected > 0;
+
     }
 
     @Override

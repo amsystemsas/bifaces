@@ -98,7 +98,7 @@ public class TemplateDaoImpl extends AbstractDao<Integer, Template> implements T
         Template template;
         jdbcTemplate = new JdbcTemplate(getDataSource());
 
-        String query = "SELECT * FROM TEMPLATEREPOSITORY TR WHERE UPPER(TR.NAME) = UPPER(?)";
+        String query = "SELECT TR.IDTR AS templateId, TR.IDCT AS categoryId, TR.NAME AS name, TR.STATUS AS status FROM TEMPLATEREPOSITORY TR WHERE UPPER(TR.NAME) = UPPER(?)";
         log.debug("Query = " + query);
         log.debug("templateName  = " + templateName);
         RowMapper<Template> rm = BeanPropertyRowMapper.newInstance(Template.class);

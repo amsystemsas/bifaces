@@ -7,7 +7,6 @@ package com.amsystem.bifaces.util;
  */
 public enum CategoryName {
     
-    ROOT (0, "Root", "ROOT"),
     PRODUCT(1, "Product", "PR"),
     POLICY(2, "Policy", "POL"),
     RISK_UNIT(3, "RiskUnit", "RU"),
@@ -60,6 +59,8 @@ public enum CategoryName {
         }
         return null;
     }
+
+
     
 
 }

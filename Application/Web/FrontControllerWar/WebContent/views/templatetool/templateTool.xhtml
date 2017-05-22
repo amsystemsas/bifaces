@@ -37,8 +37,9 @@
                                             <f:validateRegex pattern="^[a-zA-Z]+$"/>
                                             <f:validateLength minimum="2"/>
                                         </p:inputText>
-                                        <p:commandButton value="#{textI18.save_TT}" style="margin-right: 2px"
+                                        <p:commandButton id="addTemplateBtn" value="#{textI18.save_TT}" style="margin-right: 2px"
                                                          icon="ui-icon-plusthick"
+                                                         disabled="#{empty templateTreeView.selectedNode or templateTreeView.selectedNode.type ne 'default'}"
                                                          process="@this templName templateTree"
                                                          action="#{templateTreeView.addTemplate}"
                                                          update="templateTree templName winMessageId"/>
@@ -81,7 +82,7 @@
                                         selectionMode="single"
                                         selection="#{templateTreeView.selectedNode}">
                                     <p:ajax event="select"
-                                            update=":form:disassociateBtn :form:deleteTemplBtn :form:cloneTemplBtn :form:propertyDT:associateBtn"/>
+                                            update=":form:addTemplateBtn :form:disassociateBtn :form:deleteTemplBtn :form:cloneTemplBtn :form:propertyDT:associateBtn"/>
 
                                     <p:treeNode>
                                         <h:outputText value="#{tree.name}"/>
@@ -145,8 +146,9 @@
                                                      icon="fa fa-code-fork"
                                                      disabled="#{empty propertySectionView.selectedProp}"
                                                      process="@this propertyDT"
-                                                     update="propertyDT"
-                                                     onclick="PF('clonePropertyDlg').show();"/>
+                                                     actionListener="#{propertySectionView.listenerCloneClickedBtn}"
+                                                     update=":form:clonePropertyDlgId"
+                                                     oncomplete="PF('clonePropertyDlg').show();"/>
 
                                     <p:commandButton id="deletePropBtn" value="#{textI18.delete_TT}" icon="ui-icon-minusthick"
                                                      disabled="#{empty propertySectionView.selectedProp}"
@@ -168,14 +170,18 @@
 
                                 <p:commandButton id="deleteTemplBtn" value="#{textI18.delete_TT}"
                                                  disabled="#{templateTreeView.selectedNode.type ne 'TEMP'}"
-                                                 action="#{templateTreeView.deleteTemplate()}"
+                                                 action="#{templateTreeView.deleteTemplate}"
                                                  icon="ui-icon-minusthick"
-                                                 process="@this"/>
+                                                 process="@this templateTree winMessageId"/>
 
                                 <p:commandButton id="cloneTemplBtn" value="#{textI18.clone_TT}"
                                                  icon="fa fa-code-fork"
                                                  disabled="#{templateTreeView.selectedNode.type ne 'TEMP'}"
-                                                 update=""/>
+                                                 process="@this propertyDT"
+                                                 actionListener="#{propertySectionView.listenerCloneClickedBtn}"
+                                                 update=":form:clonePropertyDlgId"
+                                                 oncomplete="PF('clonePropertyDlg').show();"/>
+
 
                                 <p:spacer styleClass="vertical-separator" style="width: 2px; height: 22px"/>
 
@@ -218,7 +224,7 @@
                                      process="@this propertyDT winMessageId widSettPropId"
                                      action="#{propertySectionView.updateProperty()}"
                                      update="propertyDT" icon="ui-icon-plusthick"
-                                    oncomplete="PF('widSettingProperty').hide();"/>
+                                     oncomplete="PF('widSettingProperty').hide();"/>
                     <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
                                      onclick="PF('widSettingProperty').hide();" type="button"/>
                 </p:outputPanel>
@@ -253,10 +259,19 @@
                     <p:inputText id="propertyCloneId" label="#{textI18.propertyTemplate_name_TT}"
                                  style="width:184px;margin-right:2px"
                                  required="true"
-                                 value="#{propertySectionView.clonePropertyTemplateName}">
+                                 value="#{propertySectionView.commandClicked eq 'clonePropBtn' ? propertySectionView.clonePropertyTemplateName : templateTreeView.cloneTemplateName}">
                         <f:validateRegex pattern="^[a-zA-Z]+$"/>
                         <f:validateLength minimum="2"/>
                     </p:inputText>
+
+                    <p:outputLabel for="categoryBtn" rendered="#{propertySectionView.commandClicked ne 'clonePropBtn'}"
+                                   value="#{textI18.label_TT}:"/>
+
+                    <p:selectOneMenu id="categoryBtn" rendered="#{propertySectionView.commandClicked ne 'clonePropBtn'}"
+                                     value="#{templateTreeView.selectedCategory}" style="width:165px">
+                        <f:selectItems value="#{templateTreeView.categoryNames}" var="cn" itemLabel="#{cn.label}" />
+                    </p:selectOneMenu>
+
                 </h:panelGrid>
 
                 <p:outputPanel style="width: 100%;overflow: auto;display: block">
@@ -264,10 +279,19 @@
 
                     <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
                                      icon="ui-icon-plusthick"
+                                     rendered="#{propertySectionView.commandClicked eq 'clonePropBtn'}"
                                      process="@this propertyCloneId propertyDT winMessageId"
                                      update="propertyCloneId propertyDT winMessageId"
-                                     oncomplete="PF('clonePropertyDlg').hide();"
+                                     onsuccess="PF('clonePropertyDlg').hide();"
                                      action="#{propertySectionView.cloneProperty}"/>
+
+                    <p:commandButton value="#{textI18.save_TT}" style="margin: 1% 3% 3% 33%"
+                                     icon="ui-icon-plusthick"
+                                     rendered="#{propertySectionView.commandClicked ne 'clonePropBtn'}"
+                                     process="@this propertyCloneId templateTree categoryBtn winMessageId"
+                                     update="propertyCloneId templateTree winMessageId"
+                                     action="#{templateTreeView.cloneTemplate}"/>
+
                     <p:commandButton value="#{textI18.cancel_TT}" icon="ui-icon-cancel"
                                      onclick="PF('clonePropertyDlg').hide();" type="button"/>
                 </p:outputPanel>
