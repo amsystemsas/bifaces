@@ -20,6 +20,14 @@ public interface PropertyTemplateDao {
     boolean save(PropertyTemplate propertyTemplate);
 
     /**
+     * Guarda en base de datos el conjunto de propiedades asociadas a una  plantilla
+     *
+     * @param propertyOptionItems <tt>List</tt> de propiedades a ser almacenados
+     * @return <tt>true</tt> Si el el conjunto de asociaciones es almacenado con exito. <tt>false</tt> Si ocurre algun error.
+     */
+    boolean saveBatch(List<PropertyTemplate> propertyOptionItems);
+
+    /**
      * Elimina una asociacion entre <tt>Template</tt> y <tt>Property</tt>
      *
      * @param propertyTemplate

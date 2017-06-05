@@ -22,12 +22,8 @@ public enum SymbolType {
 
     private final String value;
 
-
-
     private SymbolType(String value) {
         this.value = value;
-
-
     }
 
     public String getValue() {

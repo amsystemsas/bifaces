@@ -28,6 +28,11 @@ public class Property implements IFProperty{
 
     public Property() { }
 
+    public Property(Integer propertyId, String name){
+        this.propertyId = propertyId;
+        this.name = name;
+    }
+
     public Property(Integer propertyId, String name, String label, int type, int renderingType,
                     String expressionValidator, String formula, String defaultValue,
                     boolean visible, boolean editable, boolean required, String parent, String mask) {

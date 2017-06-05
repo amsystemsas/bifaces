@@ -1,7 +1,11 @@
 package com.amsystem.bifaces.dynamictemplate.view;
 
 import com.amsystem.bifaces.dynamictemplate.controller.TreeOperation;
+import com.amsystem.bifaces.util.CategoryName;
+import com.amsystem.bifaces.util.MessageUtil;
 import com.amsystem.bifaces.util.NodeType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.primefaces.model.TreeNode;
 
 import javax.annotation.PostConstruct;
@@ -10,7 +14,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Title: TemplateTreeView.java
@@ -24,12 +30,26 @@ public class TemplateTreeView implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //Atributo usado para la impresion de logs
+    private static final Logger log = LogManager.getLogger(TemplateTreeView.class.getName());
+
     //Raiz del arbol de plantillas
     private TreeNode root;
+
     //Nodo seleccionado en el arbol de plantillas
     private TreeNode selectedNode;
+
     //Nombre de la plantilla a ser registrada
     private String templateName;
+
+    //Nombre de la plantilla clonada
+    private String cloneTemplateName;
+
+    //Categoria destino para la plantilla clonada
+    private CategoryName selectedCategory;
+
+    //Lista de categorias disponibles para las plantillas
+    private List<SelectItem> categoryNameItems;
 
     @ManagedProperty("#{propertySectionView}")
     //Seccion de tabla de propiedades
@@ -37,7 +57,7 @@ public class TemplateTreeView implements Serializable {
 
     @ManagedProperty("#{nodeVO}")
     //Nodo arbol de plantillas
-    private PropertyNode propertyNode;
+    private PropertyTemplateNode propertyTemplateNode;
 
     @ManagedProperty("#{treeOperation}")
     //Operaciones arbol de plantillas
@@ -50,7 +70,7 @@ public class TemplateTreeView implements Serializable {
 
 
     /**
-     * Agrega una nueva plantilla al arbol
+     * Agrega una nueva plantilla al arbol y al sistema
      */
     public void addTemplate() {
         service.addTemplate(selectedNode, templateName);
@@ -58,11 +78,11 @@ public class TemplateTreeView implements Serializable {
     }
 
     /**
-     * Elimina un plantilla del arbol. Si la plantilla tiene almenos una propiedad asociada, se invoca el metodo <tt>confirmationDeleteTemplate</tt>
+     * Elimina un plantilla del arbol. Si la plantilla tiene almenos una propiedad asociada, se invoca el metodo
+     * <tt>confirmationDeleteTemplate</tt>
      */
     public void deleteTemplate() {
         service.deleteTemplate(selectedNode, false);
-        // getPropertyNode().setName(null);
     }
 
     /**
@@ -70,13 +90,15 @@ public class TemplateTreeView implements Serializable {
      */
     public void confirmationDeleteTemplate() {
         service.deleteTemplate(selectedNode, true);
-        // getPropertyNode().setName(null);
     }
 
+    /**
+     * Agrega una propiedad seleccionada a una plantilla del arbol seleccionada
+     */
     public void associatePropertyTemplate() {
 
         if (propertySectionView.getSelectedProp() != null && selectedNode != null) {
-            final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
+            final PropertyTemplateNode dataNode = (PropertyTemplateNode) selectedNode.getData();
             if (dataNode.getNodeType() == NodeType.TEMPLATE_NAME) {
                 service.addPropertyToTemplate(selectedNode, propertySectionView.getSelectedProp());
             } else {
@@ -88,10 +110,13 @@ public class TemplateTreeView implements Serializable {
 
     }
 
+    /**
+     * Desvincula una propiedad de una plantilla.
+     */
     public void disassociatePropertyTemplate() {
 
         if (selectedNode != null) {
-            final PropertyNode dataNode = (PropertyNode) selectedNode.getData();
+            final PropertyTemplateNode dataNode = (PropertyTemplateNode) selectedNode.getData();
             if (dataNode.getNodeType() == NodeType.PROPERTY) {
                 service.removeChild(selectedNode, true);
 
@@ -102,6 +127,39 @@ public class TemplateTreeView implements Serializable {
             showMessage();
         }
 
+    }
+
+    /**
+     * Crea o clona una propiedad a partir de otra propiedad seleccionada
+     */
+    public void cloneTemplate() {
+        log.debug(" ************** Clonando Propiedad *************: ");
+        log.debug(selectedCategory);
+        service.cloneTemplate(getCloneTemplateName(), selectedNode, selectedCategory);
+        setCloneTemplateName(null);
+        MessageUtil.updateExecute(null, "PF('clonePropertyDlg').hide();");
+        init();
+
+    }
+
+    public CategoryName[] getCategoryNames() {
+        return CategoryName.values();
+    }
+
+    public CategoryName getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public void setSelectedCategory(CategoryName selectedCategory) {
+        this.selectedCategory = selectedCategory;
+    }
+
+    public List<SelectItem> getCategoryNameItems() {
+        return categoryNameItems;
+    }
+
+    public void setCategoryNameItems(List<SelectItem> categoryNameItems) {
+        this.categoryNameItems = categoryNameItems;
     }
 
     public TreeNode getRoot() {
@@ -120,12 +178,28 @@ public class TemplateTreeView implements Serializable {
         this.selectedNode = selectedNode;
     }
 
-    public PropertyNode getPropertyNode() {
-        return propertyNode;
+    public PropertyTemplateNode getPropertyTemplateNode() {
+        return propertyTemplateNode;
     }
 
-    public void setPropertyNode(PropertyNode propertyNode) {
-        this.propertyNode = propertyNode;
+    public void setPropertyTemplateNode(PropertyTemplateNode propertyTemplateNode) {
+        this.propertyTemplateNode = propertyTemplateNode;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getCloneTemplateName() {
+        return cloneTemplateName;
+    }
+
+    public void setCloneTemplateName(String cloneTemplateName) {
+        this.cloneTemplateName = cloneTemplateName;
     }
 
     public TreeOperation getService() {
@@ -144,17 +218,8 @@ public class TemplateTreeView implements Serializable {
         this.propertySectionView = propertySectionView;
     }
 
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
-    }
-
     public void showMessage() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
     }
-
 
 }

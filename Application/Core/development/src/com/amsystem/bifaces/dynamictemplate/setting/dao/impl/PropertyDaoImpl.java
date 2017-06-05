@@ -263,8 +263,9 @@ public class PropertyDaoImpl extends AbstractDao<Integer, Property> implements P
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("ids", idsProperty);
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(getDataSource());
-        String sql = "SELECT * FROM PROPERTY WHERE IDPROPERTY IN (:ids)";
-        propertyList = template.query(sql, parameters, new BeanPropertyRowMapper(Property.class));
+        StringBuilder sqlSelect = new StringBuilder();
+        sqlSelect.append(buildDynamicSelectQueryProperty(false,false)).append(" IDPROPERTY IN (:ids)");
+        propertyList = template.query(sqlSelect.toString(), parameters, new BeanPropertyRowMapper(Property.class));
 
         return propertyList;
     }

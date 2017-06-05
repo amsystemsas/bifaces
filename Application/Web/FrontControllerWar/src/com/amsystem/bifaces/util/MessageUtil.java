@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -65,9 +66,9 @@ public class MessageUtil {
      * @param componentUpdateName
      * @param componentExecuteName
      */
-    public static void updateExecute(String componentUpdateName, String componentExecuteName) {
+    public static void updateExecute(List<String> componentUpdateName, String componentExecuteName) {
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        if(!StringUtil.isEmptyOrNullValue(componentUpdateName))  requestContext.update(componentUpdateName);
+        if(componentUpdateName != null && !componentUpdateName.isEmpty())  requestContext.update(componentUpdateName);
         if(!StringUtil.isEmptyOrNullValue(componentExecuteName))  requestContext.execute(componentExecuteName);
     }
 

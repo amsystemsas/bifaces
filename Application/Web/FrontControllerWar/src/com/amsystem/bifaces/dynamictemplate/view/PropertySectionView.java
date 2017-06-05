@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class PropertySectionView implements Serializable{
     //Lista de propiedades
     private List<IFProperty> properties;
 
+    private String commandClicked;
 
     //Propiedad actual seleccionada en la tabla
     private IFProperty selectedProp;
@@ -129,6 +131,11 @@ public class PropertySectionView implements Serializable{
         return (selectedProp != null) ? service.getAllPropertyOptionItem(selectedProp.getPropertyId()) : null;
     }
 
+    public void listenerCloneClickedBtn(ActionEvent actionEvent){
+        commandClicked = actionEvent.getComponent().getId();
+        log.debug("Click :" + commandClicked);
+
+    }
 
 
     public String getPropertyName() {
@@ -193,5 +200,13 @@ public class PropertySectionView implements Serializable{
 
     public void setOptionItemSelected(PropertyOptionItem optionItemSelected) {
         this.optionItemSelected = optionItemSelected;
+    }
+
+    public String getCommandClicked() {
+        return commandClicked;
+    }
+
+    public void setCommandClicked(String commandClicked) {
+        this.commandClicked = commandClicked;
     }
 }
