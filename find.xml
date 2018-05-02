@@ -2,6 +2,7 @@
   <component name="FindSettings">
     <option name="localCaseSensitive" value="true" />
     <option name="LOCAL_CASE_SENSITIVE_SEARCH" value="true" />
+    <option name="FILE_MASK" value="*.xml" />
     <recentFileMasks>
       <mask>*.html</mask>
       <mask>*.js</mask>
@@ -10,10 +11,10 @@
       <mask>*.sql</mask>
       <mask>*.mxml</mask>
       <mask>*.properties</mask>
-      <mask>*.xml</mask>
       <mask>*.hbm.xml</mask>
       <mask>*.java</mask>
       <mask>*.jsp</mask>
+      <mask>*.xml</mask>
     </recentFileMasks>
   </component>
 </application>
